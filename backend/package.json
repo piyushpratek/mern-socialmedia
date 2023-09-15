@@ -4,7 +4,6 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node ./dist/server.js",
     "start:dev": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only --clear ./server.ts",
     "start:prod": "cross-env NODE_ENV=production ts-node-dev --respawn --transpile-only --clear ./server.ts",
     "start:prod:debug": "cross-env NODE_ENV=production ts-node-dev --respawn --transpile-only --clear --inspect -- ./server.ts",
@@ -16,6 +15,7 @@
   "license": "ISC",
   "dependencies": {
     "chalk": "^4.1.2",
+    "cross-env": "^7.0.3",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "mongoose": "^7.5.1"
