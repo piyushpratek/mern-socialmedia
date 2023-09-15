@@ -1,5 +1,4 @@
 ## Workflow
 
-first create route then create controller then create models
-now import created model in controller
-and import created controllers in routes
+Create App.ts and then server.ts then config folder(config.ts, logger.ts,database.ts)
+create models

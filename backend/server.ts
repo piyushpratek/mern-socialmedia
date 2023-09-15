@@ -1,8 +1,15 @@
 import { PORT } from './config/config'
 import logger from './config/logger'
-
+import connectDB from './config/database'
 import app from './src/app'
 
+// Handling uncaught Exception
+process.on('uncaughtException', (err: Error) => {
+    logger.error(`Error: ${err.message}`)
+    logger.info('Shutting down the server due to Uncaught Exception')
+    process.exit(1)
+})
+void connectDB.connect()
 
 const server = app.listen(PORT, () => {
     logger.success(`SERVER STARTED ON PORT ${PORT}`)
