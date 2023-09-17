@@ -1,5 +1,5 @@
 import express from 'express'; // const {
-import { register } from '../controllers/userController';
+import { login, register } from '../controllers/userController';
 
 // const { isAuthenticated } = require("../middlewares/auth");
 
@@ -7,7 +7,7 @@ const router = express.Router();
 
 router.route("/register").post(register);
 
-// router.route("/login").post(login);
+router.route("/login").post(login);
 
 // router.route("/logout").get(logout);
 

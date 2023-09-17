@@ -1,9 +1,29 @@
 import mongoose from 'mongoose'
 import bcrypt from "bcrypt"
-// const jwt = require("jsonwebtoken");
+import jwt from 'jsonwebtoken'
+import { JWT_SECRET } from '../config/config';
 // const crypto = require("crypto");
 
-const userSchema = new mongoose.Schema({
+interface IUser extends Document {
+    name: string;
+    avatar: {
+        public_id: string;
+        url: string;
+    };
+    email: string;
+    password: string;
+    posts: mongoose.Types.ObjectId[];
+    followers: mongoose.Types.ObjectId[];
+    following: mongoose.Types.ObjectId[];
+    resetPasswordToken: string;
+    resetPasswordExpire: Date;
+
+    matchPassword(password: string): Promise<boolean>;
+    generateToken(): string;
+    // getResetPasswordToken(): string;
+}
+
+const userSchema = new mongoose.Schema<IUser>({
     name: {
         type: String,
         required: [true, "Please enter a name"],
@@ -17,7 +37,8 @@ const userSchema = new mongoose.Schema({
     email: {
         type: String,
         required: [true, "Please enter an email"],
-        unique: [true, "Email already exists"],
+        // unique: [true, "Email already exists"],
+        unique: true
     },
     password: {
         type: String,
@@ -57,13 +78,13 @@ userSchema.pre("save", async function (next) {
     next();
 });
 
-// userSchema.methods.matchPassword = async function (password) {
-//     return await bcrypt.compare(password, this.password);
-// };
+userSchema.methods.matchPassword = async function (password: string) {
+    return await bcrypt.compare(password, this.password);
+};
 
-// userSchema.methods.generateToken = function () {
-//     return jwt.sign({ _id: this._id }, process.env.JWT_SECRET);
-// };
+userSchema.methods.generateToken = function () {
+    return jwt.sign({ _id: this._id }, JWT_SECRET);
+};
 
 // userSchema.methods.getResetPasswordToken = function () {
 //     const resetToken = crypto.randomBytes(20).toString("hex");
@@ -77,6 +98,6 @@ userSchema.pre("save", async function (next) {
 //     return resetToken;
 // };
 
-const User = mongoose.model("User", userSchema);
+const User = mongoose.model<IUser>("User", userSchema);
 
 export default User

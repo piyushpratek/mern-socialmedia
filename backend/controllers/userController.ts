@@ -52,49 +52,50 @@ export const register = catchAsyncErrors(async (req: Request, res: Response) => 
   }
 });
 
-// exports.login = async (req, res) => {
-//   try {
-//     const { email, password } = req.body;
+//login user
+export const login = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const { email, password } = req.body;
 
-//     const user = await User.findOne({ email })
-//       .select("+password")
-//       .populate("posts followers following");
+    const user = await User.findOne({ email })
+      .select("+password")
+    // .populate("posts followers following");
 
-//     if (!user) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "User does not exist",
-//       });
-//     }
+    if (!user) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "User does not exist",
+      });
+    }
 
-//     const isMatch = await user.matchPassword(password);
+    const isMatch = await user.matchPassword(password);
 
-//     if (!isMatch) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Incorrect password",
-//       });
-//     }
+    if (!isMatch) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "Incorrect password",
+      });
+    }
 
-//     const token = await user.generateToken();
+    const token = user.generateToken();
 
-//     const options = {
-//       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
-//       httpOnly: true,
-//     };
+    const options = {
+      expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
+      httpOnly: true,
+    };
 
-//     res.status(200).cookie("token", token, options).json({
-//       success: true,
-//       user,
-//       token,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    res.status(HttpStatus.OK).cookie("token", token, options).json({
+      success: true,
+      user,
+      token,
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 // exports.logout = async (req, res) => {
 //   try {
