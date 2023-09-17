@@ -1,25 +1,11 @@
 import express from 'express'; // const {
-//   register,
-//   login,
-//   followUser,
-//   logout,
-//   updatePassword,
-//   updateProfile,
-//   deleteMyProfile,
-//   myProfile,
-//   getUserProfile,
-//   getAllUsers,
-//   forgotPassword,
-//   resetPassword,
-//   getMyPosts,
-//   getUserPosts,
-// } = require("../controllers/user");
+import { register } from '../controllers/userController';
 
 // const { isAuthenticated } = require("../middlewares/auth");
 
 const router = express.Router();
 
-// router.route("/register").post(register);
+router.route("/register").post(register);
 
 // router.route("/login").post(login);
 

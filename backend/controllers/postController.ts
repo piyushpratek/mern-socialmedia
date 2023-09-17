@@ -6,6 +6,8 @@ import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
 import { Request, Response, NextFunction } from 'express'
 import { HttpStatus } from "../http-status.enum";
 
+
+//Create Post
 export const createPost = catchAsyncErrors(async (req: Request, res: Response) => {
   try {
     // const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
