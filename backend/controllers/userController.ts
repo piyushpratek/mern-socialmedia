@@ -2,13 +2,14 @@ import User from '../models/userModel';
 import Post from '../models/postModel';
 import { catchAsyncErrors } from '../middleware/catchAsyncErrors';
 import { HttpStatus } from '../http-status.enum';
+import { Request, Response } from 'express'
 
 // const { sendEmail } = require('../middlewares/sendEmail');
 // const crypto = require('crypto');
 // const cloudinary = require('cloudinary');
 
 //Register User
-export const register = catchAsyncErrors(async (req, res) => {
+export const register = catchAsyncErrors(async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
 

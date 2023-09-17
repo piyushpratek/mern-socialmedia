@@ -3,7 +3,7 @@ import User from "../models/userModel";
 // const User = require('../models/User');
 // const cloudinary = require('cloudinary');
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
-import { Request, Response, NextFunction } from 'express'
+import { Request, Response } from 'express'
 import { HttpStatus } from "../http-status.enum";
 
 
