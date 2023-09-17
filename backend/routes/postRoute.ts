@@ -4,7 +4,7 @@ import {
   deletePost,
   likeAndUnlikePost,
   getPostOfFollowing,
-  // updateCaption,
+  updateCaption,
   // commentOnPost,
   // deleteComment,
 } from '../controllers/postController';
@@ -15,8 +15,8 @@ const router = express.Router();
 
 router.route('/post/upload').post(isAuthenticated, createPost);
 
-router.route('/post/:id').get(isAuthenticated, likeAndUnlikePost).delete(isAuthenticated, deletePost);
-//   .put(isAuthenticated, updateCaption)
+router.route('/post/:id').put(isAuthenticated, updateCaption).get(isAuthenticated, likeAndUnlikePost).delete(isAuthenticated, deletePost);
+//   
 
 router.route('/posts').get(isAuthenticated, getPostOfFollowing);
 
