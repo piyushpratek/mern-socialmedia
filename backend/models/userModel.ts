@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../config/config';
 // const crypto = require("crypto");
 
-interface IUser extends Document {
+export interface IUser extends Document {
     name: string;
     avatar: {
         public_id: string;
