@@ -10,6 +10,8 @@ app.use(express.urlencoded({ extended: true }));
 
 // Importing Routes
 import post from '../routes/postRoute'
+import user from '../routes/userRoute'
+
 // const user = require("./routes/user");
 
 app.get('/api/health', (req, res) => {
@@ -18,7 +20,7 @@ app.get('/api/health', (req, res) => {
 
 // Using Routes
 app.use("/api/v1", post);
-// app.use("/api/v1", user);
+app.use("/api/v1", user);
 
 // app.use(express.static(path.join(__dirname, "../frontend/build")));
 

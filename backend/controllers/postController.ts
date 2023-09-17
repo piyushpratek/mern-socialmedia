@@ -1,5 +1,5 @@
 import Post from "../models/postModel";
-import User from "../models/user";
+import User from "../models/userModel";
 // const User = require('../models/User');
 // const cloudinary = require('cloudinary');
 import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
