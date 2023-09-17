@@ -1,6 +1,6 @@
 import User from '../models/userModel';
 import Post from '../models/postModel';
-import { catchAsyncErrors } from '../middleware/catchAsyncErrors';
+import { catchAsyncErrors } from '../middlewares/catchAsyncErrors';
 import { HttpStatus } from '../http-status.enum';
 import { Request, Response } from 'express'
 
@@ -32,17 +32,17 @@ export const register = catchAsyncErrors(async (req: Request, res: Response) => 
       avatar: { public_id: "sample_id", url: "sampleurl" }
     });
 
-    // const token = await user.generateToken();
+    const token = user.generateToken();
 
     const options = {
       expires: new Date(Date.now() + 90 * 24 * 60 * 60 * 1000),
       httpOnly: true,
     };
 
-    res.status(HttpStatus.CREATED).json({
+    res.status(HttpStatus.CREATED).cookie("token", token, options).json({
       success: true,
       user,
-      // token,
+      token,
     });
   } catch (error: any) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

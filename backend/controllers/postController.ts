@@ -2,7 +2,7 @@ import Post from "../models/postModel";
 import User from "../models/userModel";
 // const User = require('../models/User');
 // const cloudinary = require('cloudinary');
-import { catchAsyncErrors } from "../middleware/catchAsyncErrors";
+import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import { Request, Response } from 'express'
 import { HttpStatus } from "../http-status.enum";
 
