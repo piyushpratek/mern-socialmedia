@@ -1,25 +1,22 @@
 import express from 'express';
 import {
   createPost,
-  // likeAndUnlikePost,
-  // deletePost,
+  deletePost,
+  likeAndUnlikePost,
   // getPostOfFollowing,
   // updateCaption,
   // commentOnPost,
   // deleteComment,
 } from '../controllers/postController';
-// const { isAuthenticated } = require('../middlewares/auth');
+import { isAuthenticated } from '../middlewares/auth';
+
 
 const router = express.Router();
 
-// router.route('/post/upload').post(isAuthenticated, createPost);
-router.route('/post/upload').post(createPost);
+router.route('/post/upload').post(isAuthenticated, createPost);
 
-// router
-//   .route('/post/:id')
-//   .get(isAuthenticated, likeAndUnlikePost)
+router.route('/post/:id').get(isAuthenticated, likeAndUnlikePost).delete(isAuthenticated, deletePost);
 //   .put(isAuthenticated, updateCaption)
-//   .delete(isAuthenticated, deletePost);
 
 // router.route('/posts').get(isAuthenticated, getPostOfFollowing);
 

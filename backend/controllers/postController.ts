@@ -1,10 +1,9 @@
 import Post from "../models/postModel";
 import User from "../models/userModel";
-// const User = require('../models/User');
-// const cloudinary = require('cloudinary');
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import { Request, Response } from 'express'
 import { HttpStatus } from "../http-status.enum";
+// const cloudinary = require('cloudinary');
 
 
 //Create Post
@@ -17,19 +16,20 @@ export const createPost = catchAsyncErrors(async (req: Request, res: Response) =
     const newPostData = {
       caption: req.body.caption,
       image: {
-        // public_id: myCloud.public_id,
-        // url: myCloud.secure_url,
+        public_id: "req.body.public_id",
+        url: "req.body.url"
       },
-      // owner: req.user._id,
+      owner: (req as any).user._id,
     };
 
     const post = await Post.create(newPostData);
 
-    // const user = await User.findById(req.user._id);
+    const user = await User.findById((req as any).user._id);
 
     // user.posts.unshift(post._id);
+    user?.posts.push(post._id);
 
-    // await user.save();
+    await user?.save();
 
     res.status(HttpStatus.OK).json({
       success: true,
@@ -43,87 +43,101 @@ export const createPost = catchAsyncErrors(async (req: Request, res: Response) =
   }
 })
 
+//Delete Post
+export const deletePost = catchAsyncErrors(async (req, res) => {
+  try {
+    const post = await Post.findById(req.params.id);
 
-// exports.deletePost = async (req, res) => {
-//   try {
-//     const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        success: false,
+        message: 'Post not found',
+      });
+    }
 
-//     if (!post) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Post not found',
-//       });
-//     }
+    if (post?.owner?.toString() !== (req as any).user._id.toString()) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        message: 'Unauthorized',
+      });
+    }
 
-//     if (post.owner.toString() !== req.user._id.toString()) {
-//       return res.status(401).json({
-//         success: false,
-//         message: 'Unauthorized',
-//       });
-//     }
+    // await cloudinary.v2.uploader.destroy(post.image.public_id);
 
-//     await cloudinary.v2.uploader.destroy(post.image.public_id);
+    await post?.deleteOne();
 
-//     await post.remove();
+    const user = await User.findById((req as any).user._id);
 
-//     const user = await User.findById(req.user._id);
+    const index = user?.posts.indexOf((req as any).params.id);
 
-//     const index = user.posts.indexOf(req.params.id);
-//     user.posts.splice(index, 1);
+    user?.posts.splice(index as number, 1);
+    //above code switched to below code 
+    // if (index !== undefined && index !== -1) {
+    //   user?.posts.splice(index, 1);
+    //   await user?.save();
+    // } else {
+    //   // Handle the case where the post ID is not found in the user's posts array
+    //   return res.status(HttpStatus.NOT_FOUND).json({
+    //     success: false,
+    //     message: 'Post not found in user posts',
+    //   });
+    // }
 
-//     await user.save();
+    await user?.save();
 
-//     res.status(200).json({
-//       success: true,
-//       message: 'Post deleted',
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: 'Post deleted',
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-// exports.likeAndUnlikePost = async (req, res) => {
-//   try {
-//     const post = await Post.findById(req.params.id);
+//like and unlike post
+export const likeAndUnlikePost = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const post = await Post.findById(req.params.id);
 
-//     if (!post) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Post not found',
-//       });
-//     }
+    if (!post) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        success: false,
+        message: 'Post not found',
+      });
+    }
 
-//     if (post.likes.includes(req.user._id)) {
-//       const index = post.likes.indexOf(req.user._id);
+    if (post.likes.includes((req as any).user._id)) {
+      const index = post.likes.indexOf((req as any).user._id);
 
-//       post.likes.splice(index, 1);
+      post.likes.splice(index, 1);
 
-//       await post.save();
+      await post.save();
 
-//       return res.status(200).json({
-//         success: true,
-//         message: 'Post Unliked',
-//       });
-//     } else {
-//       post.likes.push(req.user._id);
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Post Unliked',
+      });
+    } else {
+      post.likes.push((req as any).user._id);
 
-//       await post.save();
+      await post.save();
 
-//       return res.status(200).json({
-//         success: true,
-//         message: 'Post Liked',
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+      return res.status(HttpStatus.OK).json({
+        success: true,
+        message: 'Post Liked',
+      });
+    }
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
+
 
 // exports.getPostOfFollowing = async (req, res) => {
 //   try {

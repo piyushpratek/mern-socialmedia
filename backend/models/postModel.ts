@@ -1,6 +1,23 @@
-import mongoose from 'mongoose'
+import mongoose, { Types } from 'mongoose'
 
-const postModel = new mongoose.Schema({
+export interface IComment {
+    user: Types.ObjectId;
+    comment: string;
+}
+
+export interface IPost extends Document {
+    caption: string;
+    image: {
+        public_id: string;
+        url: string;
+    };
+    owner: Types.ObjectId;
+    createdAt: Date;
+    likes: Types.ObjectId[];
+    comments: IComment[];
+}
+
+const postModel = new mongoose.Schema<IPost>({
     caption: String,
 
     image: {
@@ -38,8 +55,7 @@ const postModel = new mongoose.Schema({
     ],
 });
 
-// module.exports = mongoose.model("Post", postModal);
-const Post = mongoose.model("Post", postModel);
+const Post = mongoose.model<IPost>("Post", postModel);
 
 export default Post
 
