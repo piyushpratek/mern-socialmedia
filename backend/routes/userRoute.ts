@@ -1,5 +1,6 @@
 import express from 'express'; // const {
-import { login, register } from '../controllers/userController';
+import { followUser, login, logout, register, updatePassword, updateProfile } from '../controllers/userController';
+import { isAuthenticated } from '../middlewares/auth';
 
 // const { isAuthenticated } = require("../middlewares/auth");
 
@@ -9,13 +10,13 @@ router.route("/register").post(register);
 
 router.route("/login").post(login);
 
-// router.route("/logout").get(logout);
+router.route("/logout").get(logout);
 
-// router.route("/follow/:id").get(isAuthenticated, followUser);
+router.route("/follow/:id").get(isAuthenticated, followUser);
 
-// router.route("/update/password").put(isAuthenticated, updatePassword);
+router.route("/update/password").put(isAuthenticated, updatePassword);
 
-// router.route("/update/profile").put(isAuthenticated, updateProfile);
+router.route("/update/profile").put(isAuthenticated, updateProfile);
 
 // router.route("/delete/me").delete(isAuthenticated, deleteMyProfile);
 // router.route("/me").get(isAuthenticated, myProfile);

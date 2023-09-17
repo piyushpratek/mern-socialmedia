@@ -97,142 +97,147 @@ export const login = catchAsyncErrors(async (req: Request, res: Response) => {
   }
 });
 
-// exports.logout = async (req, res) => {
-//   try {
-//     res
-//       .status(200)
-//       .cookie("token", null, { expires: new Date(Date.now()), httpOnly: true })
-//       .json({
-//         success: true,
-//         message: "Logged out",
-//       });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+//Logout User
+export const logout = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    res
+      .status(HttpStatus.OK)
+      .cookie("token", null, { expires: new Date(Date.now()), httpOnly: true })
+      .json({
+        success: true,
+        message: "Logged out",
+      });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-// exports.followUser = async (req, res) => {
-//   try {
-//     const userToFollow = await User.findById(req.params.id);
-//     const loggedInUser = await User.findById(req.user._id);
+//Follow User
+export const followUser = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const userToFollow = await User.findById(req.params.id);
+    const loggedInUser = await User.findById((req as any).user._id);
 
-//     if (!userToFollow) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "User not found",
-//       });
-//     }
+    if (!userToFollow) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
-//     if (loggedInUser.following.includes(userToFollow._id)) {
-//       const indexfollowing = loggedInUser.following.indexOf(userToFollow._id);
-//       const indexfollowers = userToFollow.followers.indexOf(loggedInUser._id);
+    if (loggedInUser?.following.includes(userToFollow._id)) {
+      const indexfollowing = loggedInUser.following.indexOf(userToFollow._id);
+      const indexfollowers = userToFollow.followers.indexOf(loggedInUser._id);
 
-//       loggedInUser.following.splice(indexfollowing, 1);
-//       userToFollow.followers.splice(indexfollowers, 1);
+      loggedInUser.following.splice(indexfollowing, 1);
+      userToFollow.followers.splice(indexfollowers, 1);
 
-//       await loggedInUser.save();
-//       await userToFollow.save();
+      await loggedInUser.save();
+      await userToFollow.save();
 
-//       res.status(200).json({
-//         success: true,
-//         message: "User Unfollowed",
-//       });
-//     } else {
-//       loggedInUser.following.push(userToFollow._id);
-//       userToFollow.followers.push(loggedInUser._id);
+      res.status(HttpStatus.OK).json({
+        success: true,
+        message: "User Unfollowed",
+      });
+    }
+    else {
+      loggedInUser?.following.push(userToFollow._id);
+      userToFollow.followers.push(loggedInUser!._id);
 
-//       await loggedInUser.save();
-//       await userToFollow.save();
+      await loggedInUser?.save();
+      await userToFollow.save();
 
-//       res.status(200).json({
-//         success: true,
-//         message: "User followed",
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+      res.status(HttpStatus.OK).json({
+        success: true,
+        message: "User followed",
+      });
+    }
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-// exports.updatePassword = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user._id).select("+password");
+//Update Password 
+export const updatePassword = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById((req as any).user._id).select("+password");
 
-//     const { oldPassword, newPassword } = req.body;
+    const { oldPassword, newPassword } = req.body;
 
-//     if (!oldPassword || !newPassword) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Please provide old and new password",
-//       });
-//     }
+    if (!oldPassword || !newPassword) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "Please provide old and new password",
+      });
+    }
 
-//     const isMatch = await user.matchPassword(oldPassword);
+    const isMatch = await user?.matchPassword(oldPassword);
 
-//     if (!isMatch) {
-//       return res.status(400).json({
-//         success: false,
-//         message: "Incorrect Old password",
-//       });
-//     }
+    if (!isMatch) {
+      return res.status(HttpStatus.BAD_REQUEST).json({
+        success: false,
+        message: "Incorrect Old password",
+      });
+    }
 
-//     user.password = newPassword;
-//     await user.save();
+    user!.password = newPassword;
+    await user?.save();
 
-//     res.status(200).json({
-//       success: true,
-//       message: "Password Updated",
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: "Password Updated",
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-// exports.updateProfile = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user._id);
+//Update Profile
+export const updateProfile = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById((req as any).user._id);
 
-//     const { name, email, avatar } = req.body;
+    const { name, email } = req.body;
 
-//     if (name) {
-//       user.name = name;
-//     }
-//     if (email) {
-//       user.email = email;
-//     }
+    if (name) {
+      user!.name = name;
+    }
+    if (email) {
+      user!.email = email;
+    }
 
-//     if (avatar) {
-//       await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+    // if (avatar) {
+    // await cloudinary.v2.uploader.destroy(user.avatar.public_id);
 
-//       const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-//         folder: "avatars",
-//       });
-//       user.avatar.public_id = myCloud.public_id;
-//       user.avatar.url = myCloud.secure_url;
-//     }
+    // const myCloud = await cloudinary.v2.uploader.upload(avatar, {
+    //   folder: "avatars",
+    // });
+    // user.avatar.public_id = myCloud.public_id;
+    // user.avatar.url = myCloud.secure_url;
+    // }
 
-//     await user.save();
+    await user?.save();
 
-//     res.status(200).json({
-//       success: true,
-//       message: "Profile Updated",
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: "Profile Updated",
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 // exports.deleteMyProfile = async (req, res) => {
 //   try {

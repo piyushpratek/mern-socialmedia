@@ -71,17 +71,6 @@ export const deletePost = catchAsyncErrors(async (req, res) => {
     const index = user?.posts.indexOf((req as any).params.id);
 
     user?.posts.splice(index as number, 1);
-    //above code switched to below code 
-    // if (index !== undefined && index !== -1) {
-    //   user?.posts.splice(index, 1);
-    //   await user?.save();
-    // } else {
-    //   // Handle the case where the post ID is not found in the user's posts array
-    //   return res.status(HttpStatus.NOT_FOUND).json({
-    //     success: false,
-    //     message: 'Post not found in user posts',
-    //   });
-    // }
 
     await user?.save();
 
@@ -138,60 +127,61 @@ export const likeAndUnlikePost = catchAsyncErrors(async (req: Request, res: Resp
   }
 });
 
+//Get post of Following
+export const getPostOfFollowing = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById((req as any).user._id);
 
-// exports.getPostOfFollowing = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user._id);
+    const posts = await Post.find({
+      owner: {
+        $in: user?.following,
+      },
+    }).populate('owner likes comments.user');
 
-//     const posts = await Post.find({
-//       owner: {
-//         $in: user.following,
-//       },
-//     }).populate('owner likes comments.user');
+    res.status(HttpStatus.OK).json({
+      success: true,
+      posts: posts.reverse(),
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-//     res.status(200).json({
-//       success: true,
-//       posts: posts.reverse(),
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+//Update Caption
+export const updateCaption = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const post = await Post.findById(req.params.id);
 
-// exports.updateCaption = async (req, res) => {
-//   try {
-//     const post = await Post.findById(req.params.id);
+    if (!post) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        success: false,
+        message: 'Post not found',
+      });
+    }
 
-//     if (!post) {
-//       return res.status(404).json({
-//         success: false,
-//         message: 'Post not found',
-//       });
-//     }
+    if (post.owner.toString() !== (req as any).user._id.toString()) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        message: 'Unauthorized',
+      });
+    }
 
-//     if (post.owner.toString() !== req.user._id.toString()) {
-//       return res.status(401).json({
-//         success: false,
-//         message: 'Unauthorized',
-//       });
-//     }
-
-//     post.caption = req.body.caption;
-//     await post.save();
-//     res.status(200).json({
-//       success: true,
-//       message: 'Post updated',
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    post.caption = req.body.caption;
+    await post.save();
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: 'Post updated',
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 // exports.commentOnPost = async (req, res) => {
 //   try {
