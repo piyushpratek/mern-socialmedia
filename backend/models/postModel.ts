@@ -1,6 +1,7 @@
 import mongoose, { Types } from 'mongoose'
 
 export interface IComment {
+    [x: string]: any;
     user: Types.ObjectId;
     comment: string;
 }

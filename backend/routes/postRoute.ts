@@ -5,8 +5,8 @@ import {
   likeAndUnlikePost,
   getPostOfFollowing,
   updateCaption,
-  // commentOnPost,
-  // deleteComment,
+  commentOnPost,
+  deleteComment,
 } from '../controllers/postController';
 import { isAuthenticated } from '../middlewares/auth';
 
@@ -19,9 +19,9 @@ router.route('/post/:id').get(isAuthenticated, likeAndUnlikePost).put(isAuthenti
 
 router.route('/posts').get(isAuthenticated, getPostOfFollowing);
 
-// router
-//   .route('/post/comment/:id')
-//   .put(isAuthenticated, commentOnPost)
-//   .delete(isAuthenticated, deleteComment);
+router
+  .route('/post/comment/:id')
+  .put(isAuthenticated, commentOnPost)
+  .delete(isAuthenticated, deleteComment);
 
 export default router;
