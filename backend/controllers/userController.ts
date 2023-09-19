@@ -3,9 +3,9 @@ import Post from '../models/postModel';
 import { catchAsyncErrors } from '../middlewares/catchAsyncErrors';
 import { HttpStatus } from '../http-status.enum';
 import { Request, Response } from 'express'
+import { sendEmail } from '../middlewares/sendEmail';
+import crypto from 'crypto'
 
-// const { sendEmail } = require('../middlewares/sendEmail');
-// const crypto = require('crypto');
 // const cloudinary = require('cloudinary');
 
 //Register User
@@ -386,92 +386,94 @@ export const getAllUsers = catchAsyncErrors(async (req, res) => {
   }
 });
 
-// exports.forgotPassword = async (req, res) => {
-//   try {
-//     const user = await User.findOne({ email: req.body.email });
+//Forgot Password
+export const forgotPassword = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const user = await User.findOne({ email: req.body.email });
 
-//     if (!user) {
-//       return res.status(404).json({
-//         success: false,
-//         message: "User not found",
-//       });
-//     }
+    if (!user) {
+      return res.status(HttpStatus.NOT_FOUND).json({
+        success: false,
+        message: "User not found",
+      });
+    }
 
-//     const resetPasswordToken = user.getResetPasswordToken();
+    const resetPasswordToken = user.getResetPasswordToken();
 
-//     await user.save();
+    await user.save();
 
-//     const resetUrl = `${req.protocol}://${req.get(
-//       "host"
-//     )}/password/reset/${resetPasswordToken}`;
+    const resetUrl = `${req.protocol}://${req.get(
+      "host"
+    )}/api/v1/password/reset/${resetPasswordToken}`;
 
-//     const message = `Reset Your Password by clicking on the link below: \n\n ${resetUrl}`;
+    const message = `Reset Your Password by clicking on the link below: \n\n ${resetUrl}`;
 
-//     try {
-//       await sendEmail({
-//         email: user.email,
-//         subject: "Reset Password",
-//         message,
-//       });
+    try {
+      await sendEmail({
+        email: user.email,
+        subject: "Reset Password",
+        message,
+      });
 
-//       res.status(200).json({
-//         success: true,
-//         message: `Email sent to ${user.email}`,
-//       });
-//     } catch (error) {
-//       user.resetPasswordToken = undefined;
-//       user.resetPasswordExpire = undefined;
-//       await user.save();
+      res.status(HttpStatus.OK).json({
+        success: true,
+        message: `Email sent to ${user.email} successfully`,
+      });
+    } catch (error: any) {
+      user.resetPasswordToken = undefined;
+      user.resetPasswordExpire = undefined;
+      await user.save();
 
-//       res.status(500).json({
-//         success: false,
-//         message: error.message,
-//       });
-//     }
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+      res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+        success: false,
+        message: error.message,
+      });
+    }
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-// exports.resetPassword = async (req, res) => {
-//   try {
-//     const resetPasswordToken = crypto
-//       .createHash("sha256")
-//       .update(req.params.token)
-//       .digest("hex");
+// Reset Password
+export const resetPassword = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const resetPasswordToken = crypto
+      .createHash("sha256")
+      .update(req.params.token)
+      .digest("hex");
 
-//     const user = await User.findOne({
-//       resetPasswordToken,
-//       resetPasswordExpire: { $gt: Date.now() },
-//     });
+    const user = await User.findOne({
+      resetPasswordToken,
+      resetPasswordExpire: { $gt: Date.now() },
+    });
 
-//     if (!user) {
-//       return res.status(401).json({
-//         success: false,
-//         message: "Token is invalid or has expired",
-//       });
-//     }
+    if (!user) {
+      return res.status(HttpStatus.UNAUTHORIZED).json({
+        success: false,
+        message: "Token is invalid or has expired",
+      });
+    }
 
-//     user.password = req.body.password;
+    user.password = req.body.password;
 
-//     user.resetPasswordToken = undefined;
-//     user.resetPasswordExpire = undefined;
-//     await user.save();
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpire = undefined;
+    await user.save();
 
-//     res.status(200).json({
-//       success: true,
-//       message: "Password Updated",
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    res.status(HttpStatus.OK).json({
+      success: true,
+      message: "Password Updated",
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
 // exports.getMyPosts = async (req, res) => {
 //   try {

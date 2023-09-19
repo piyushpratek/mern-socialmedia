@@ -2,7 +2,7 @@ import mongoose from 'mongoose'
 import bcrypt from "bcrypt"
 import jwt from 'jsonwebtoken'
 import { JWT_SECRET } from '../config/config';
-// const crypto = require("crypto");
+import crypto from "crypto"
 
 export interface IUser extends Document {
     name: string;
@@ -15,12 +15,12 @@ export interface IUser extends Document {
     posts: mongoose.Types.ObjectId[];
     followers: mongoose.Types.ObjectId[];
     following: mongoose.Types.ObjectId[];
-    resetPasswordToken: string;
-    resetPasswordExpire: Date;
+    resetPasswordToken?: string;
+    resetPasswordExpire?: Date;
 
     matchPassword(password: string): Promise<boolean>;
     generateToken(): string;
-    // getResetPasswordToken(): string;
+    getResetPasswordToken(): string;
 }
 
 const userSchema = new mongoose.Schema<IUser>({
@@ -86,17 +86,17 @@ userSchema.methods.generateToken = function () {
     return jwt.sign({ _id: this._id }, JWT_SECRET);
 };
 
-// userSchema.methods.getResetPasswordToken = function () {
-//     const resetToken = crypto.randomBytes(20).toString("hex");
+userSchema.methods.getResetPasswordToken = function () {
+    const resetToken = crypto.randomBytes(20).toString("hex");
 
-//     this.resetPasswordToken = crypto
-//         .createHash("sha256")
-//         .update(resetToken)
-//         .digest("hex");
-//     this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
+    this.resetPasswordToken = crypto
+        .createHash("sha256")
+        .update(resetToken)
+        .digest("hex");
+    this.resetPasswordExpire = Date.now() + 10 * 60 * 1000;
 
-//     return resetToken;
-// };
+    return resetToken;
+};
 
 const User = mongoose.model<IUser>("User", userSchema);
 
