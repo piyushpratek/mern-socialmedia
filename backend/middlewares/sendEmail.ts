@@ -1,4 +1,5 @@
 import nodemailer from "nodemailer"
+import { SMPT_MAIL } from "../config/config";
 
 interface EmailOptions {
   email: string
@@ -17,7 +18,7 @@ export const sendEmail = async (options: EmailOptions) => {
   });
 
   const mailOptions = {
-    from: process.env.SMPT_MAIL,
+    from: SMPT_MAIL,
     to: options.email,
     subject: options.subject,
     text: options.message,

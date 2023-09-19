@@ -51,6 +51,11 @@ if (!process.env.COOKIE_EXPIRE) {
     process.exit(1)
 }
 
+if (!process.env.SMPT_MAIL) {
+    logger.error('Please define SMPT_MAIL in your .env file.')
+    process.exit(1)
+}
+
 
 export const MONGO_URI = process.env.MONGO_URI
 export const JWT_SECRET = process.env.JWT_SECRET
@@ -58,5 +63,5 @@ export const NODE_ENV = process.env.NODE_ENV
 export const PORT = Number(process.env.PORT)
 export const JWT_EXPIRE = process.env.JWT_EXPIRE
 export const COOKIE_EXPIRE = process.env.COOKIE_EXPIRE
-
+export const SMPT_MAIL = process.env.SMPT_MAIL
 
