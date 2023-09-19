@@ -8,7 +8,7 @@ create middlewares =auth.ts for authentication of user , sendEmail using nodemai
 
 create controllers-postController then= createPost -> like and dislike post -> delete post -> getPostOfFollowing -> updateCaption -> commentOnPost -> deleteComment
 ,
-userController then= register -> login -> followUser ->Logout -> updatePassword -> updateProfile -> deleteMyProfile -> myProfile -> getUserProfile -> getAllUsers -> forgotPassword -> resetPassword
+userController then= register -> login -> followUser ->Logout -> updatePassword -> updateProfile -> deleteMyProfile -> myProfile -> getUserProfile -> getAllUsers -> forgotPassword -> resetPassword -> getMyPosts -> getUserPosts
 
 create routes-postRoute then= createPost -> like and dislike post -> delete post ->getPostOfFollowing -> updateCaption -> commentOnPost -> deleteComment,
 userRoute then=register -> login -> followUser ->Logout -> updatePassword -> updateProfile -> deleteMyProfile -> myProfile -> getUserProfile -> getAllUsers

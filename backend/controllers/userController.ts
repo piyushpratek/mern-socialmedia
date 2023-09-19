@@ -475,52 +475,54 @@ export const resetPassword = catchAsyncErrors(async (req: Request, res: Response
   }
 });
 
-// exports.getMyPosts = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.user._id);
+//Get MyPosts
+export const getMyPosts = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById((req as any).user._id);
 
-//     const posts = [];
+    const posts = [];
 
-//     for (let i = 0; i < user.posts.length; i++) {
-//       const post = await Post.findById(user.posts[i]).populate(
-//         "likes comments.user owner"
-//       );
-//       posts.push(post);
-//     }
+    for (let i = 0; i < user!.posts.length; i++) {
+      const post = await Post.findById(user?.posts[i]).populate(
+        "likes comments.user owner"
+      );
+      posts.push(post);
+    }
 
-//     res.status(200).json({
-//       success: true,
-//       posts,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    res.status(HttpStatus.OK).json({
+      success: true,
+      posts,
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
 
-// exports.getUserPosts = async (req, res) => {
-//   try {
-//     const user = await User.findById(req.params.id);
+//Get UserPosts
+export const getUserPosts = catchAsyncErrors(async (req: Request, res: Response) => {
+  try {
+    const user = await User.findById(req.params.id);
 
-//     const posts = [];
+    const posts = [];
 
-//     for (let i = 0; i < user.posts.length; i++) {
-//       const post = await Post.findById(user.posts[i]).populate(
-//         "likes comments.user owner"
-//       );
-//       posts.push(post);
-//     }
+    for (let i = 0; i < user!.posts.length; i++) {
+      const post = await Post.findById(user?.posts[i]).populate(
+        "likes comments.user owner"
+      );
+      posts.push(post);
+    }
 
-//     res.status(200).json({
-//       success: true,
-//       posts,
-//     });
-//   } catch (error) {
-//     res.status(500).json({
-//       success: false,
-//       message: error.message,
-//     });
-//   }
-// };
+    res.status(HttpStatus.OK).json({
+      success: true,
+      posts,
+    });
+  } catch (error: any) {
+    res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({
+      success: false,
+      message: error.message,
+    });
+  }
+});
