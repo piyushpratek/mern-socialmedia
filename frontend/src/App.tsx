@@ -2,21 +2,25 @@ import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 import Header from "./Components/Header/Header"
 import Login from "./Components/Login/Login"
 import { useEffect } from "react"
-import { useAppDispatch } from "./store/store"
+import { store, useAppDispatch, useAppSelector } from "./store/store"
 import { loadUser } from "./store/actionHelpers/userActionHelper"
+import Home from "./Components/Home/Home"
 
 function App() {
   const dispatch = useAppDispatch
   useEffect(() => {
-    dispatch(loadUser())
-  }, [])
+    store.dispatch(loadUser())
+  }, [dispatch])
+
+  const { isAuthenticated } = useAppSelector((state) => state.user)
 
   return (
     <>
       <Router>
-        <Header />
+        {isAuthenticated && <Header />}
+
         <Routes>
-          <Route path="/" element={<Login />} />
+          <Route path="/" element={isAuthenticated ? < Home /> : <Login />} />
         </Routes>
       </Router>
     </>

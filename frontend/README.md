@@ -32,9 +32,17 @@ npm install @mui/icons-material
 npm i react-router-dom
 npm install @reduxjs/toolkit react-redux axios
 
-src=> Component =>Header =>Login
+src=> Component
+=>Header.tsx
+=>Login.tsx
+=>Home.tsx
+=>User.tsx
+=>Post.tsx
 
-src=> store => store.ts =>slice -> userSlice => actionHelpers-> userActionHelper
+src=> store
+=> store.ts
+=>slice -> userSlice.tsx
+=>actionHelpers-> userActionHelper.tsx
 
 vite.config.ts => add proxy in this file (backend URL)
 
