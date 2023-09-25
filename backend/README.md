@@ -11,7 +11,7 @@ create controllers-postController then= createPost -> like and dislike post -> d
 userController then= register -> login -> followUser ->Logout -> updatePassword -> updateProfile -> deleteMyProfile -> myProfile -> getUserProfile -> getAllUsers -> forgotPassword -> resetPassword -> getMyPosts -> getUserPosts
 
 create routes-postRoute then= createPost -> like and dislike post -> delete post ->getPostOfFollowing -> updateCaption -> commentOnPost -> deleteComment,
-userRoute then=register -> login -> followUser ->Logout -> updatePassword -> updateProfile -> deleteMyProfile -> myProfile -> getUserProfile -> getAllUsers
+userRoute then=register -> login -> followUser ->Logout -> updatePassword -> updateProfile -> deleteMyProfile -> myProfile -> getUserProfile -> getAllUsers -> forgotPassword -> resetPassword ->
 
 password=1234567890
 
@@ -19,3 +19,5 @@ this.resetPasswordExpire = Date.now() + 10 _ 60 _ 1000;
 10 minute _ 60 seconds _ 1000 mili seconds -> it means it is valid for 10 minutes
 
 part 2 - 15/55 = delete comment request
+
+mailtrap.io= website to use nodemailer for sending emails

@@ -465,7 +465,7 @@ export const resetPassword = catchAsyncErrors(async (req: Request, res: Response
 
     res.status(HttpStatus.OK).json({
       success: true,
-      message: "Password Updated",
+      message: "Password Reset successfully",
     });
   } catch (error: any) {
     res.status(HttpStatus.INTERNAL_SERVER_ERROR).json({

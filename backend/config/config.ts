@@ -56,6 +56,20 @@ if (!process.env.SMPT_MAIL) {
     process.exit(1)
 }
 
+if (!process.env.SMPT_HOST) {
+    logger.error('Please define SMPT_HOST in your .env file.')
+    process.exit(1)
+}
+
+if (!process.env.SMPT_PORT) {
+    logger.error('Please define SMPT_PORT in your .env file.')
+    process.exit(1)
+}
+
+if (!process.env.SMPT_PASSWORD) {
+    logger.error('Please define SMPT_PASSWORD in your .env file.')
+    process.exit(1)
+}
 
 export const MONGO_URI = process.env.MONGO_URI
 export const JWT_SECRET = process.env.JWT_SECRET
@@ -64,4 +78,6 @@ export const PORT = Number(process.env.PORT)
 export const JWT_EXPIRE = process.env.JWT_EXPIRE
 export const COOKIE_EXPIRE = process.env.COOKIE_EXPIRE
 export const SMPT_MAIL = process.env.SMPT_MAIL
-
+export const SMPT_HOST = process.env.SMPT_HOST
+export const SMPT_PORT = process.env.SMPT_PORT
+export const SMPT_PASSWORD = process.env.SMPT_PASSWORD

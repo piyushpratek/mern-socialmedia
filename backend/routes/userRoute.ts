@@ -1,5 +1,5 @@
 import express from 'express'; // const {
-import { deleteMyProfile, followUser, getAllUsers, getUserProfile, login, logout, myProfile, register, updatePassword, updateProfile } from '../controllers/userController';
+import { deleteMyProfile, followUser, forgotPassword, getAllUsers, getUserProfile, login, logout, myProfile, register, resetPassword, updatePassword, updateProfile } from '../controllers/userController';
 import { isAuthenticated } from '../middlewares/auth';
 
 const router = express.Router();
@@ -28,8 +28,8 @@ router.route("/user/:id").get(isAuthenticated, getUserProfile);
 
 router.route("/users").get(isAuthenticated, getAllUsers);
 
-// router.route("/forgot/password").post(forgotPassword);
+router.route("/forgot/password").post(forgotPassword);
 
-// router.route("/password/reset/:token").put(resetPassword);
+router.route("/password/reset/:token").put(resetPassword);
 
 export default router; 

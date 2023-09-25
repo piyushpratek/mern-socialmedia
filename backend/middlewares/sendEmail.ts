@@ -1,5 +1,5 @@
 import nodemailer from "nodemailer"
-import { SMPT_MAIL } from "../config/config";
+import { SMPT_HOST, SMPT_MAIL, SMPT_PASSWORD, SMPT_PORT } from "../config/config";
 
 interface EmailOptions {
   email: string
@@ -9,11 +9,11 @@ interface EmailOptions {
 
 export const sendEmail = async (options: EmailOptions) => {
   const transporter = nodemailer.createTransport({
-    host: "smtp.mailtrap.io",
-    port: 2525,
+    host: SMPT_HOST,
+    port: parseInt(SMPT_PORT),
     auth: {
-      user: "211d4679e3d79c",
-      pass: "9e2b7d43009e26",
+      user: SMPT_MAIL,
+      pass: SMPT_PASSWORD,
     },
   });
 
