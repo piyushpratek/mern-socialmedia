@@ -32,5 +32,11 @@ npm install @mui/icons-material
 npm i react-router-dom
 npm install @reduxjs/toolkit react-redux axios
 
-Component =
-Header
+src=> Component =>Header =>Login
+
+src=> store => store.ts =>slice -> userSlice => actionHelpers-> userActionHelper
+
+vite.config.ts => add proxy in this file (backend URL)
+
+NOTES=
+e.preventDefault()= it is used so that page does not reload
