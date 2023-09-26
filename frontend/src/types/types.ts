@@ -19,14 +19,14 @@ export interface Post {
     comments: string[] | undefined;
     likes: string[] | undefined;
     caption: string;
-    owner: string;
+    owner: {
+        avatar: { url: string }
+        _id: string
+        name: string
+        email: string
+    }
     image: { url: string };
     _id: string;
     avatar: { url: string }
     name?: string
-
-    // id: number;
-    // title: string;
-    // content: string;
-    // authorId: number;
 }
