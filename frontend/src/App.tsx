@@ -1,3 +1,4 @@
+import "./index.css"
 import { Route, BrowserRouter as Router, Routes } from "react-router-dom"
 import Header from "./Components/Header/Header"
 import Login from "./Components/Login/Login"

@@ -1,0 +1,29 @@
+// Define a type for a user
+interface User {
+  id: number;
+  username: string;
+  email: string;
+  // Add other user properties as needed
+}
+
+// Define a type for a post
+interface Post {
+  id: number;
+  title: string;
+  content: string;
+  authorId: number;
+  // Add other post properties as needed
+}
+
+// Define a type for a list of users
+interface UsersList {
+  users: User[];
+}
+
+// Define a type for a list of posts
+interface PostsList {
+  posts: Post[];
+}
+
+
+

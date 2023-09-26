@@ -38,13 +38,17 @@ src=> Component
 =>Home.tsx
 =>User.tsx
 =>Post.tsx
+=>Loader.tsx
 
 src=> store
 => store.ts
-=>slice -> userSlice.tsx
+=>slice -> userSlice.tsx -> postOfFollowingSlice.ts ->allUsersSlice.ts ->userProfileSlice.ts
 =>actionHelpers-> userActionHelper.tsx
+
+src=>types ->types.ts
 
 vite.config.ts => add proxy in this file (backend URL)
 
 NOTES=
 e.preventDefault()= it is used so that page does not reload
+clearErrors()= whenever we call this reducer then state mein error ki value jo bhi hogi wo null ho jayegi/ya khatam

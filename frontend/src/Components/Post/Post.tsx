@@ -1,6 +1,14 @@
-import { Avatar, Typography } from "@mui/material";
+import { Avatar, Button, Typography } from "@mui/material";
 import "./Post.css"
+import {
+    MoreVert,
+    Favorite,
+    FavoriteBorder,
+    ChatBubbleOutline,
+    DeleteOutline,
+} from "@mui/icons-material";
 import { Link } from "react-router-dom";
+import { useState } from "react";
 
 interface PostProps {
     postId: string;
@@ -11,13 +19,20 @@ interface PostProps {
     ownerImage: string;
     ownerName: string;
     ownerId: string;
-    isDeleted?: boolean;
+    isDelete?: boolean;
     isAccount?: boolean;
 }
-const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImage, ownerName, ownerId, isDeleted = false, isAccount = false }: PostProps) => {
+const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImage, ownerName, ownerId, isDelete = false, isAccount = false }: PostProps) => {
+
+    const [liked, setLiked] = useState<boolean>(false)
+
+    const handleLike = () => {
+        setLiked(!liked)
+    }
     return (
         <div className="post">
-            <div className="postHeader">  </div>
+            <div className="postHeader">
+                {isAccount ? <Button><MoreVert /></Button> : null} </div>
             <img src={postImage} alt="Post" />
 
             <div className="postDetails">
@@ -28,7 +43,21 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
 
                 <Typography fontWeight={100} color="rgba(0,0,0,0.582)" style={{ alignSelf: "center" }}>{caption}</Typography>
             </div>
+            <button style={{ border: "none", backgroundColor: "white", cursor: "pointer", margin: "1vmax 2vmax" }}>
+                <Typography>5 Likes</Typography>
+            </button>
 
+            <div className="postFooter">
+                <Button onClick={handleLike}> {liked ? <Favorite style={{ color: "red" }} /> : <FavoriteBorder />} </Button>
+
+                <Button>
+                    <ChatBubbleOutline />
+                </Button>
+
+                {isDelete ? <Button>
+                    <DeleteOutline />
+                </Button> : null}
+            </div>
         </div>
     )
 }

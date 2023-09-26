@@ -1,6 +1,8 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess } from "../slice/userSlice";
+import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess } from "../slice/user/userSlice";
+import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
+import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
 
 export interface ErrorResponse {
   message: string;
@@ -43,24 +45,18 @@ export const loadUser = () => async (dispatch: Dispatch) => {
   }
 };
 
-// export const getFollowingPosts = () => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "postOfFollowingRequest",
-//     });
+export const getFollowingPosts = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(postOfFollowingRequest())
 
-//     const { data } = await axios.get("/api/v1/posts");
-//     dispatch({
-//       type: "postOfFollowingSuccess",
-//       payload: data.posts,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "postOfFollowingFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.get("/api/v1/posts");
+    dispatch(postOfFollowingSuccess(data.posts))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(postOfFollowingFailure(message))
+  }
+};
 
 // export const getMyPosts = () => async (dispatch) => {
 //   try {
@@ -81,26 +77,20 @@ export const loadUser = () => async (dispatch: Dispatch) => {
 //   }
 // };
 
-// export const getAllUsers =
-//   (name = "") =>
-//   async (dispatch) => {
-//     try {
-//       dispatch({
-//         type: "allUsersRequest",
-//       });
+export const getAllUsers =
+  (name = "") =>
+    async (dispatch: Dispatch) => {
+      try {
+        dispatch(allUsersRequest())
 
-//       const { data } = await axios.get(`/api/v1/users?name=${name}`);
-//       dispatch({
-//         type: "allUsersSuccess",
-//         payload: data.users,
-//       });
-//     } catch (error) {
-//       dispatch({
-//         type: "allUsersFailure",
-//         payload: error.response.data.message,
-//       });
-//     }
-//   };
+        const { data } = await axios.get(`/api/v1/users?name=${name}`);
+        dispatch(allUsersSuccess(data.users))
+      } catch (error) {
+        const axiosError = error as AxiosError<ErrorResponse>;
+        const message = axiosError?.response?.data?.message || "Error Occurred";
+        dispatch(allUsersFailure(message))
+      }
+    };
 
 // export const logoutUser = () => async (dispatch) => {
 //   try {
