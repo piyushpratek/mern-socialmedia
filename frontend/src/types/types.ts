@@ -8,9 +8,9 @@ export interface User {
     };
     email: string;
     password: string;
-    posts: string[]; // Change this to match the actual type
-    followers: string[]; // Change this to match the actual type
-    following: string[]; // Change this to match the actual type
+    posts: string[];
+    followers: string[];
+    following: string[];
 }
 
 export type AllUsersData = User[];
