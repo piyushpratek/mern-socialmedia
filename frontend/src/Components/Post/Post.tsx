@@ -1,4 +1,4 @@
-import { Avatar, Button, Typography } from "@mui/material";
+import { Avatar, Button, Dialog, Typography } from "@mui/material";
 import "./Post.css"
 import {
     MoreVert,
@@ -11,13 +11,21 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { likePost } from "../../store/actionHelpers/postActionHelper";
-import { setAlertMessage } from "../../store/slice/user/userSlice";
+import { getFollowingPosts } from "../../store/actionHelpers/userActionHelper";
+import User from "../User/User";
+
 
 interface PostProps {
     postId: string;
     caption: string;
     postImage: string;
-    likes?: string[];
+    likes?: Array<{
+        _id: string;
+        name: string;
+        avatar: {
+            url: string;
+        };
+    }>;
     comments?: string[];
     ownerImage: string;
     ownerName: string;
@@ -28,25 +36,41 @@ interface PostProps {
 const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImage, ownerName, ownerId, isDelete = false, isAccount = false }: PostProps) => {
 
     const [liked, setLiked] = useState<boolean>(false)
+    const [likesUser, setLikesUser] = useState<boolean>(false)
+    const [commentValue, setCommentValue] = useState<string>("");
+    const [commentToggle, setCommentToggle] = useState<boolean>(false);
+    // const [captionValue, setCaptionValue] = useState(caption);
+    // const [captionToggle, setCaptionToggle] = useState<boolean>(false);
 
-    const { error, message } = useAppSelector((state) => state.like)
 
     const dispatch = useAppDispatch()
-
-    const handleLike = () => {
+    const { user } = useAppSelector((state) => state.user)
+    const handleLike = async () => {
         setLiked(!liked)
+        await dispatch(likePost(postId))
+        if (isAccount) {
+            console.log("Bring Me Post");
 
-        dispatch(likePost(postId))
+        } else {
+
+            dispatch(getFollowingPosts())
+        }
+    }
+
+    const addCommentHandler = () => {
+        console.log("Add Comment");
 
     }
+
     useEffect(() => {
-        if (error) {
-            dispatch(setAlertMessage({ message: error, severity: "error", }))
-        }
-        if (message) {
-            dispatch(setAlertMessage({ message: message, severity: "success", }))
-        }
-    }, [dispatch, error, message])
+        likes.forEach((item) => {
+            if (item._id === user?._id) {
+                setLiked(true)
+            }
+        })
+    }, [likes, user?._id])
+
+
 
     return (
         <div className="post">
@@ -62,14 +86,14 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
 
                 <Typography fontWeight={100} color="rgba(0,0,0,0.582)" style={{ alignSelf: "center" }}>{caption}</Typography>
             </div>
-            <button style={{ border: "none", backgroundColor: "white", cursor: "pointer", margin: "1vmax 2vmax" }}>
-                <Typography>5 Likes</Typography>
+            <button style={{ border: "none", backgroundColor: "white", cursor: "pointer", margin: "1vmax 2vmax" }} onClick={() => setLikesUser(!likesUser)} disabled={likes.length === 0 ? true : false}>
+                <Typography>{likes.length} Likes</Typography>
             </button>
 
             <div className="postFooter">
                 <Button onClick={handleLike}> {liked ? <Favorite style={{ color: "red" }} /> : <FavoriteBorder />} </Button>
 
-                <Button>
+                <Button onClick={() => setCommentToggle(!commentToggle)}>
                     <ChatBubbleOutline />
                 </Button>
 
@@ -77,6 +101,25 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
                     <DeleteOutline />
                 </Button> : null}
             </div>
+            <Dialog open={likesUser} onClose={() => setLikesUser(!likesUser)}>
+                <div className="DialogBox">
+                    <Typography variant="h4">Liked By</Typography>
+                    {likes.map(like => (
+                        <User key={like._id} userId={like._id} name={like.name} avatar={like.avatar.url} />
+                    ))}
+                </div>
+            </Dialog>
+
+            <Dialog open={commentToggle} onClose={() => setCommentToggle(!commentToggle)}>
+                <div className="DialogBox">
+                    <Typography variant="h4">Comments</Typography>
+                    <form className="commentForm" onSubmit={addCommentHandler}>
+                        <input type="text" value={commentValue} onChange={(e) => setCommentValue(e.target.value)}
+                            placeholder="Comment Here..." required />
+                        <Button type="submit" variant="contained">Add</Button>
+                    </form>
+                </div>
+            </Dialog>
         </div>
     )
 }

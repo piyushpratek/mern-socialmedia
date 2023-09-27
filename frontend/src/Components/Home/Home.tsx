@@ -6,16 +6,30 @@ import "./Home.css"
 import { getAllUsers, getFollowingPosts } from "../../store/actionHelpers/userActionHelper"
 import Loader from "../Loader/Loader"
 import { Typography } from "@mui/material"
+import { setAlertMessage } from "../../store/slice/user/userSlice"
 
 const Home = () => {
     const { loading, posts, error } = useAppSelector((state) => state.postOfFollowing)
     const { users, loading: usersLoading } = useAppSelector((state) => state.allUsers)
     const dispatch = useAppDispatch()
+    const { error: likeError, message } = useAppSelector((state) => state.like)
     useEffect(() => {
         dispatch(getFollowingPosts())
         dispatch(getAllUsers())
 
     }, [dispatch])
+
+    useEffect(() => {
+        if (error) {
+            dispatch(setAlertMessage({ message: error, severity: "error", }))
+        }
+        if (likeError) {
+            dispatch(setAlertMessage({ message: likeError, severity: "error", }))
+        }
+        if (message) {
+            dispatch(setAlertMessage({ message: message, severity: "success", }))
+        }
+    }, [dispatch, error, likeError, message])
 
     return (
         loading === true || usersLoading === true ? <Loader /> : (<div className="home">
