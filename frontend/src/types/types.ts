@@ -30,3 +30,8 @@ export interface Post {
     avatar: { url: string }
     name?: string
 }
+
+
+export interface ErrorResponse {
+    message: string;
+}

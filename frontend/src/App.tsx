@@ -6,14 +6,16 @@ import { useEffect } from "react"
 import { store, useAppDispatch, useAppSelector } from "./store/store"
 import { loadUser } from "./store/actionHelpers/userActionHelper"
 import Home from "./Components/Home/Home"
+import { Snackbar, Alert } from "@mui/material"
+import { clearAlertMessage } from "./store/slice/user/userSlice"
 
 function App() {
-  const dispatch = useAppDispatch
+  const dispatch = useAppDispatch()
   useEffect(() => {
     store.dispatch(loadUser())
   }, [dispatch])
 
-  const { isAuthenticated } = useAppSelector((state) => state.user)
+  const { isAuthenticated, alertMessage } = useAppSelector((state) => state.user)
 
   return (
     <>
@@ -24,6 +26,21 @@ function App() {
           <Route path="/" element={isAuthenticated ? < Home /> : <Login />} />
         </Routes>
       </Router>
+
+      <Snackbar open={Boolean(alertMessage.message)} autoHideDuration={5000} onClose={() => dispatch(clearAlertMessage())}>
+        <Alert
+          onClose={() => dispatch(clearAlertMessage())}
+          severity={alertMessage.severity}
+          sx={{
+            position: "fixed",
+            top: "90vh",
+            left: "90px",
+          }}
+
+        >
+          {alertMessage.message}
+        </Alert >
+      </Snackbar>
     </>
   )
 }

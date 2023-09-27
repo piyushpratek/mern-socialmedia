@@ -8,7 +8,10 @@ import {
     DeleteOutline,
 } from "@mui/icons-material";
 import { Link } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { useAppDispatch, useAppSelector } from "../../store/store";
+import { likePost } from "../../store/actionHelpers/postActionHelper";
+import { setAlertMessage } from "../../store/slice/user/userSlice";
 
 interface PostProps {
     postId: string;
@@ -26,9 +29,25 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
 
     const [liked, setLiked] = useState<boolean>(false)
 
+    const { error, message } = useAppSelector((state) => state.like)
+
+    const dispatch = useAppDispatch()
+
     const handleLike = () => {
         setLiked(!liked)
+
+        dispatch(likePost(postId))
+
     }
+    useEffect(() => {
+        if (error) {
+            dispatch(setAlertMessage({ message: error, severity: "error", }))
+        }
+        if (message) {
+            dispatch(setAlertMessage({ message: message, severity: "success", }))
+        }
+    }, [dispatch, error, message])
+
     return (
         <div className="post">
             <div className="postHeader">

@@ -3,10 +3,7 @@ import axios, { AxiosError } from "axios";
 import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess } from "../slice/user/userSlice";
 import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
-
-export interface ErrorResponse {
-  message: string;
-}
+import { ErrorResponse } from "../../types/types";
 
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {

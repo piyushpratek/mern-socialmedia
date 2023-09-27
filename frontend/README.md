@@ -42,13 +42,20 @@ src=> Component
 
 src=> store
 => store.ts
-=>slice -> userSlice.tsx -> postOfFollowingSlice.ts ->allUsersSlice.ts ->userProfileSlice.ts
+=>slice -> user -> userSlice.tsx -> postOfFollowingSlice.ts ->allUsersSlice.ts ->userProfileSlice.ts
 =>actionHelpers-> userActionHelper.tsx
+=>actionHelpers -> postActionHelpers.ts
+
+=>slice -> post -> likePostSlice.ts -> myPostsSlice.ts -> userPostSlice.ts
 
 src=>types ->types.ts
 
 vite.config.ts => add proxy in this file (backend URL)
 
+alert added at userSlice and then in App.tsx
+
 NOTES=
 e.preventDefault()= it is used so that page does not reload
 clearErrors()= whenever we call this reducer then state mein error ki value jo bhi hogi wo null ho jayegi/ya khatam
+clearErrors: (state) => { state.error = null; } = state will be null whenever fired
+clearMessage: (state) => { state.message = null; }, = whenever this will be fired message will ne null
