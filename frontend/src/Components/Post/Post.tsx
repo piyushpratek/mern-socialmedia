@@ -39,8 +39,8 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
     const [likesUser, setLikesUser] = useState<boolean>(false)
     const [commentValue, setCommentValue] = useState<string>("");
     const [commentToggle, setCommentToggle] = useState<boolean>(false);
-    // const [captionValue, setCaptionValue] = useState(caption);
-    // const [captionToggle, setCaptionToggle] = useState<boolean>(false);
+    const [captionValue, setCaptionValue] = useState(caption);
+    const [captionToggle, setCaptionToggle] = useState<boolean>(false);
 
 
     const dispatch = useAppDispatch()
