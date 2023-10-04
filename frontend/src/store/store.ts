@@ -3,7 +3,7 @@ import userSlice from './slice/user/userSlice';
 import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
 import postOfFollowingSlice from './slice/user/postOfFollowingSlice';
 import allUsersSlice from './slice/user/allUsersSlice';
-import likePostSlice from './slice/post/likePostSlice';
+import likePostSlice from './slice/post/likeandCommentPostSlice';
 // import userProfileSlice from './slice/user/userProfileSlice';
 
 

@@ -172,6 +172,10 @@ export const {
     likeSuccess,
     likeFailure,
 
+    addCommentRequest,
+    addCommentSuccess,
+    addCommentFailure,
+
     clearErrors,
     clearMessage,
 } = likeSlice.actions;
