@@ -13,20 +13,31 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { addCommentOnPost, likePost } from "../../store/actionHelpers/postActionHelper";
 import { getFollowingPosts } from "../../store/actionHelpers/userActionHelper";
 import User from "../User/User";
+import CommentCard from "../CommentCard/CommentCard";
 
 
 interface PostProps {
     postId: string;
     caption: string;
     postImage: string;
-    likes?: Array<{
+    likes?: {
         _id: string;
         name: string;
         avatar: {
             url: string;
         };
-    }>;
-    comments?: string[];
+    }[];
+    comments?: {
+        user: {
+            _id: string;
+            name: string;
+            avatar: {
+                url: string;
+            };
+        };
+        comment: string;
+        _id: string;
+    }[];
     ownerImage: string;
     ownerName: string;
     ownerId: string;
@@ -127,7 +138,19 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
                             placeholder="Comment Here..." required />
                         <Button type="submit" variant="contained">Add</Button>
                     </form>
-
+                    {comments?.length > 0 ? (
+                        comments.map((item) =>
+                            <CommentCard
+                                key={item._id}
+                                userId={item.user?._id}
+                                name={item.user.name}
+                                avatar={item.user.avatar.url}
+                                comment={item.comment}
+                                commentId={item._id}
+                                postId={postId}
+                                isAccount={isAccount}
+                            />)
+                    ) : (<Typography>No Comments Yet</Typography>)}
 
                 </div>
             </Dialog>

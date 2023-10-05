@@ -6,7 +6,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import { getFollowingPosts, getMyPosts } from "../../store/actionHelpers/userActionHelper";
 import { deleteCommentOnPost } from "../../store/actionHelpers/postActionHelper";
 
-interface CommentProps {
+interface CommentCardProps {
   userId: string;
   name: string;
   avatar: string;
@@ -24,7 +24,7 @@ const CommentCard = ({
   commentId,
   postId,
   isAccount,
-}: CommentProps) => {
+}: CommentCardProps) => {
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
 
