@@ -176,6 +176,11 @@ export const {
     addCommentSuccess,
     addCommentFailure,
 
+    deleteCommentRequest,
+    deleteCommentSuccess,
+    deleteCommentFailure,
+
+
     clearErrors,
     clearMessage,
 } = likeSlice.actions;

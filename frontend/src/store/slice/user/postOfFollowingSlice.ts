@@ -5,6 +5,7 @@ interface PostOfFollowingState {
     loading: boolean
     error: string | null;
     posts: Post[]
+
 }
 const initialState: PostOfFollowingState = {
     loading: false,

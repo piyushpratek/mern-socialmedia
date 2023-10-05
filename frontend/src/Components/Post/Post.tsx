@@ -10,7 +10,7 @@ import {
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { likePost } from "../../store/actionHelpers/postActionHelper";
+import { addCommentOnPost, likePost } from "../../store/actionHelpers/postActionHelper";
 import { getFollowingPosts } from "../../store/actionHelpers/userActionHelper";
 import User from "../User/User";
 
@@ -57,8 +57,17 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
         }
     }
 
-    const addCommentHandler = () => {
-        console.log("Add Comment");
+    const addCommentHandler = async (e: { preventDefault: () => void; }) => {
+        e.preventDefault()
+        await dispatch(addCommentOnPost(postId, commentValue))
+
+        if (isAccount) {
+            console.log("Bring Me Post");
+
+        } else {
+
+            dispatch(getFollowingPosts())
+        }
 
     }
 
@@ -118,6 +127,8 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
                             placeholder="Comment Here..." required />
                         <Button type="submit" variant="contained">Add</Button>
                     </form>
+
+
                 </div>
             </Dialog>
         </div>

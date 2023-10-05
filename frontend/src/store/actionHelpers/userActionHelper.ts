@@ -4,6 +4,7 @@ import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginR
 import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
 import { ErrorResponse } from "../../types/types";
+import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../slice/post/myPostsSlice";
 
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
@@ -55,24 +56,18 @@ export const getFollowingPosts = () => async (dispatch: Dispatch) => {
   }
 };
 
-// export const getMyPosts = () => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "myPostsRequest",
-//     });
+export const getMyPosts = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(myPostsRequest())
 
-//     const { data } = await axios.get("/api/v1/my/posts");
-//     dispatch({
-//       type: "myPostsSuccess",
-//       payload: data.posts,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "myPostsFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.get("/api/v1/my/posts");
+    dispatch(myPostsSuccess(data.posts))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(myPostsFailure(message))
+  }
+};
 
 export const getAllUsers =
   (name = "") =>
