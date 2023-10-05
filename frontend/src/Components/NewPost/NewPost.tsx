@@ -5,7 +5,7 @@ import "./NewPost.css";
 
 import { loadUser } from "../../store/actionHelpers/userActionHelper";
 import { setAlertMessage } from "../../store/slice/user/userSlice";
-import { clearErrors } from "../../store/slice/post/likeandCommentPostSlice";
+import { clearErrors } from "../../store/slice/post/likePostSlice";
 import { createNewPost } from "../../store/actionHelpers/postActionHelper";
 
 const NewPost = () => {
@@ -23,7 +23,7 @@ const NewPost = () => {
 
     Reader.onload = () => {
       if (Reader.readyState === 2) {
-        setImage(Reader.result);
+        setImage(Reader.result as string);
       }
     };
   };

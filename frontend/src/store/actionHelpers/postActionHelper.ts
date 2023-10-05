@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { ErrorResponse } from "../../types/types";
-import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, likeFailure, likeRequest, likeSuccess, newPostFailure, newPostRequest, newPostSuccess } from "../slice/post/likeandCommentPostSlice";
+import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, likeFailure, likeRequest, likeSuccess, newPostFailure, newPostRequest, newPostSuccess } from "../slice/post/likePostSlice";
 
 export const likePost = (id: string) => async (dispatch: Dispatch) => {
   try {
