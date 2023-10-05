@@ -59,7 +59,7 @@ export const login = catchAsyncErrors(async (req: Request, res: Response) => {
 
     const user = await User.findOne({ email })
       .select("+password")
-    // .populate("posts followers following");
+      .populate("posts followers following");
 
     if (!user) {
       return res.status(HttpStatus.BAD_REQUEST).json({

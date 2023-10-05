@@ -8,6 +8,8 @@ import { loadUser } from "./store/actionHelpers/userActionHelper"
 import Home from "./Components/Home/Home"
 import { Snackbar, Alert } from "@mui/material"
 import { clearAlertMessage } from "./store/slice/user/userSlice"
+import Account from "./Components/Account/Account"
+import NewPost from "./Components/NewPost/NewPost"
 
 function App() {
   const dispatch = useAppDispatch()
@@ -24,6 +26,8 @@ function App() {
 
         <Routes>
           <Route path="/" element={isAuthenticated ? < Home /> : <Login />} />
+          <Route path="/account" element={isAuthenticated ? < Account /> : <Login />} />
+          <Route path="/newpost" element={isAuthenticated ? < NewPost /> : <Login />} />
         </Routes>
       </Router>
 

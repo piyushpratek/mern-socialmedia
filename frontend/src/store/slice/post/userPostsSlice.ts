@@ -3,7 +3,7 @@ import { Post } from '../../../types/types';
 
 interface UserPostsState {
     loading: boolean;
-    posts: Post[]; // Define the type of your posts here
+    posts: Post[];
     error: string | null;
 }
 

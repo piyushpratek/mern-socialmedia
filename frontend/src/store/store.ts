@@ -4,6 +4,7 @@ import { useDispatch, TypedUseSelectorHook, useSelector } from 'react-redux';
 import postOfFollowingSlice from './slice/user/postOfFollowingSlice';
 import allUsersSlice from './slice/user/allUsersSlice';
 import likePostSlice from './slice/post/likeandCommentPostSlice';
+import myPostsSlice from './slice/post/myPostsSlice';
 // import userProfileSlice from './slice/user/userProfileSlice';
 
 
@@ -13,7 +14,8 @@ export const store = configureStore({
         postOfFollowing: postOfFollowingSlice,
         allUsers: allUsersSlice,
         // userProfile: userProfileSlice
-        like: likePostSlice
+        like: likePostSlice,
+        myPosts: myPostsSlice
     },
 
 });

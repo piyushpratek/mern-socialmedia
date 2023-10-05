@@ -1,5 +1,5 @@
 import express from 'express'; // const {
-import { deleteMyProfile, followUser, forgotPassword, getAllUsers, getUserProfile, login, logout, myProfile, register, resetPassword, updatePassword, updateProfile } from '../controllers/userController';
+import { deleteMyProfile, followUser, forgotPassword, getAllUsers, getMyPosts, getUserProfile, login, logout, myProfile, register, resetPassword, updatePassword, updateProfile } from '../controllers/userController';
 import { isAuthenticated } from '../middlewares/auth';
 
 const router = express.Router();
@@ -20,7 +20,7 @@ router.route("/delete/me").delete(isAuthenticated, deleteMyProfile);
 
 router.route("/me").get(isAuthenticated, myProfile);
 
-// router.route("/my/posts").get(isAuthenticated, getMyPosts);
+router.route("/my/posts").get(isAuthenticated, getMyPosts);
 
 // router.route("/userposts/:id").get(isAuthenticated, getUserPosts);
 

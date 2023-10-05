@@ -1,6 +1,6 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess } from "../slice/user/userSlice";
+import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess, logoutUserFailure, logoutUserRequest, logoutUserSuccess } from "../slice/user/userSlice";
 import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
 import { ErrorResponse } from "../../types/types";
@@ -84,24 +84,18 @@ export const getAllUsers =
       }
     };
 
-// export const logoutUser = () => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "LogoutUserRequest",
-//     });
+export const logoutUser = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(logoutUserRequest())
 
-//     await axios.get("/api/v1/logout");
-
-//     dispatch({
-//       type: "LogoutUserSuccess",
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "LogoutUserFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    await axios.get("/api/v1/logout");
+    dispatch(logoutUserSuccess())
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(logoutUserFailure(message))
+  }
+};
 
 // export const registerUser =
 //   (name, email, password, avatar) => async (dispatch) => {

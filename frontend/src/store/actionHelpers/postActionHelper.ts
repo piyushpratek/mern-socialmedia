@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { ErrorResponse } from "../../types/types";
-import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, likeFailure, likeRequest, likeSuccess } from "../slice/post/likeandCommentPostSlice";
+import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, likeFailure, likeRequest, likeSuccess, newPostFailure, newPostRequest, newPostSuccess } from "../slice/post/likeandCommentPostSlice";
 
 export const likePost = (id: string) => async (dispatch: Dispatch) => {
   try {
@@ -54,35 +54,29 @@ export const deleteCommentOnPost = (id: string, commentId: string) => async (dis
   }
 };
 
-// export const createNewPost = (caption, image) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "newPostRequest",
-//     });
+export const createNewPost = (caption: string, image: string | null) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(newPostRequest())
 
-//     const { data } = await axios.post(
-//       `/api/v1/post/upload`,
-//       {
-//         caption,
-//         image,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     dispatch({
-//       type: "newPostSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "newPostFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.post(
+      `/api/v1/post/upload`,
+      {
+        caption,
+        image,
+      },
+      {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
+    dispatch(newPostSuccess(data.message))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(newPostFailure(message))
+  }
+};
 
 // export const updatePost = (caption, id) => async (dispatch) => {
 //   try {

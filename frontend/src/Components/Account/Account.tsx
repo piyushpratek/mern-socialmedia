@@ -6,15 +6,16 @@ import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
 import User from "../User/User";
 import "./Account.css";
-// import { useAlert } from "react-alert";
+import { getMyPosts, logoutUser } from "../../store/actionHelpers/userActionHelper";
+import { setAlertMessage } from "../../store/slice/user/userSlice";
+import { clearErrors } from "../../store/slice/post/myPostsSlice";
 // import { deleteMyProfile, getMyPosts, logoutUser } from "../../Actions/User";
 
 const Account = () => {
   const dispatch = useAppDispatch();
-  // const alert = useAlert();
 
   const { user, loading: userLoading } = useAppSelector((state) => state.user);
-  // const { loading, error, posts } = useSelector((state) => state.myPosts);
+  const { loading, error, posts } = useAppSelector((state) => state.myPosts);
   const {
     error: likeError,
     message,
@@ -22,44 +23,44 @@ const Account = () => {
   } = useAppSelector((state) => state.like);
 
   const [followersToggle, setFollowersToggle] = useState(false);
-
   const [followingToggle, setFollowingToggle] = useState(false);
-  // const logoutHandler = () => {
-  //   dispatch(logoutUser());
-  //   alert.success("Logged out successfully");
-  // };
+
+  const logoutHandler = () => {
+    dispatch(logoutUser());
+    dispatch(setAlertMessage({ message: "Logged out successfully", severity: "success", }))
+  };
 
   const deleteProfileHandler = async () => {
     // await dispatch(deleteMyProfile());
-    // dispatch(logoutUser());
+    dispatch(logoutUser());
   };
 
   useEffect(() => {
-    // dispatch(getMyPosts());
+    dispatch(getMyPosts());
   }, [dispatch]);
 
-  // useEffect(() => {
-  //   if (error) {
-  //     alert.error(error);
-  //     dispatch({ type: "clearErrors" });
-  //   }
+  useEffect(() => {
+    if (error) {
+      dispatch(setAlertMessage({ message: error, severity: "error", }))
+      dispatch(clearErrors());
+    }
 
-  //   if (likeError) {
-  //     alert.error(likeError);
-  //     dispatch({ type: "clearErrors" });
-  //   }
-  //   if (message) {
-  //     alert.success(message);
-  //     dispatch({ type: "clearMessage" });
-  //   }
-  // }, [alert, error, message, likeError, dispatch]);
+    if (likeError) {
+      dispatch(setAlertMessage({ message: likeError, severity: "error", }))
+      dispatch(clearErrors());
+    }
+    if (message) {
+      dispatch(setAlertMessage({ message: message, severity: "success", }))
+      dispatch(clearErrors());
+    }
+  }, [error, message, likeError, dispatch]);
 
   return loading === true || userLoading === true ? (
     <Loader />
   ) : (
     <div className="account">
       <div className="accountleft">
-        {posts && posts.length > 0 ? (
+        {posts?.length > 0 ? (
           posts.map((post) => (
             <Post
               key={post._id}
@@ -79,31 +80,32 @@ const Account = () => {
           <Typography variant="h6">You have not made any post</Typography>
         )}
       </div>
+
       <div className="accountright">
         <Avatar
-          src={user.avatar.url}
+          src={user?.avatar.url}
           sx={{ height: "8vmax", width: "8vmax" }}
         />
 
-        <Typography variant="h5">{user.name}</Typography>
+        <Typography variant="h5">{user?.name}</Typography>
 
         <div>
           <button onClick={() => setFollowersToggle(!followersToggle)}>
             <Typography>Followers</Typography>
           </button>
-          <Typography>{user.followers.length}</Typography>
+          <Typography>{user?.followers.length}</Typography>
         </div>
 
         <div>
           <button onClick={() => setFollowingToggle(!followingToggle)}>
             <Typography>Following</Typography>
           </button>
-          <Typography>{user.following.length}</Typography>
+          <Typography>{user?.following.length}</Typography>
         </div>
 
         <div>
           <Typography>Posts</Typography>
-          <Typography>{user.posts.length}</Typography>
+          <Typography>{user?.posts.length}</Typography>
         </div>
 
         <Button variant="contained" onClick={logoutHandler}>
@@ -129,8 +131,8 @@ const Account = () => {
           <div className="DialogBox">
             <Typography variant="h4">Followers</Typography>
 
-            {user && user.followers.length > 0 ? (
-              user.followers.map((follower) => (
+            {user!.followers.length > 0 ? (
+              user!.followers.map((follower) => (
                 <User
                   key={follower._id}
                   userId={follower._id}
@@ -153,8 +155,8 @@ const Account = () => {
           <div className="DialogBox">
             <Typography variant="h4">Following</Typography>
 
-            {user && user.following.length > 0 ? (
-              user.following.map((follow) => (
+            {user!.following.length > 0 ? (
+              user!.following.map((follow) => (
                 <User
                   key={follow._id}
                   userId={follow._id}

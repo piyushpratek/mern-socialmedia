@@ -61,3 +61,4 @@ clearErrors: (state) => { state.error = null; } = state will be null whenever fi
 clearMessage: (state) => { state.message = null; }, = whenever this will be fired message will ne null
 
 //getFollowingPost not working with isAccount
+//after post is like or dislike and login/ logout it shows the alert again and again

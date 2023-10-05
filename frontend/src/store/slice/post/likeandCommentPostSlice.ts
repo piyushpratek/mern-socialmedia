@@ -180,6 +180,10 @@ export const {
     deleteCommentSuccess,
     deleteCommentFailure,
 
+    newPostRequest,
+    newPostSuccess,
+    newPostFailure,
+
 
     clearErrors,
     clearMessage,
