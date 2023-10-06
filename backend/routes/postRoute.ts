@@ -13,7 +13,7 @@ import { uploadMulter } from '../utils/multerUtils'
 
 const router = express.Router();
 
-router.route('/post/upload').post(isAuthenticated, uploadMulter.single('posts'), createPost);
+router.route('/post/upload').post(isAuthenticated, uploadMulter.single('image'), createPost);
 
 router.route('/post/:id').get(isAuthenticated, likeAndUnlikePost).put(isAuthenticated, updateCaption).delete(isAuthenticated, deletePost);
 
