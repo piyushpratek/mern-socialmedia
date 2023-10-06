@@ -3,21 +3,24 @@ import User from "../models/userModel";
 import { catchAsyncErrors } from "../middlewares/catchAsyncErrors";
 import { Request, Response } from 'express'
 import { HttpStatus } from "../http-status.enum";
-// const cloudinary = require('cloudinary');
-
+import cloudinary from "cloudinary"
+import fs from 'fs'
 
 //Create Post
 export const createPost = catchAsyncErrors(async (req: Request, res: Response) => {
   try {
-    // const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
-    //   folder: 'posts',
-    // });
-
+    const myCloud = await cloudinary.v2.uploader.upload(req.body.image, {
+      folder: 'posts',
+      width: 150,
+      crop: 'scale',
+      resource_type: 'auto',
+    });
+    fs.unlinkSync(req.body.image)
     const newPostData = {
       caption: req.body.caption,
       image: {
-        public_id: "req.body.public_id",
-        url: "req.body.url"
+        public_id: myCloud.public_id,
+        url: myCloud.secure_url
       },
       owner: (req as any).user._id,
     };

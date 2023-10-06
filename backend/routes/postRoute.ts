@@ -9,11 +9,11 @@ import {
   deleteComment,
 } from '../controllers/postController';
 import { isAuthenticated } from '../middlewares/auth';
-
+import { uploadMulter } from '../utils/multerUtils'
 
 const router = express.Router();
 
-router.route('/post/upload').post(isAuthenticated, createPost);
+router.route('/post/upload').post(isAuthenticated, uploadMulter.single('posts'), createPost);
 
 router.route('/post/:id').get(isAuthenticated, likeAndUnlikePost).put(isAuthenticated, updateCaption).delete(isAuthenticated, deletePost);
 

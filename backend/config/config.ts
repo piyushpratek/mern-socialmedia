@@ -71,6 +71,21 @@ if (!process.env.SMPT_PASSWORD) {
     process.exit(1)
 }
 
+if (!process.env.CLOUDINARY_NAME) {
+    logger.error('Please define CLOUDINARY_NAME in your .env file.')
+    process.exit(1)
+}
+
+if (!process.env.CLOUDINARY_API_KEY) {
+    logger.error('Please define CLOUDINARY_API_KEY in your .env file.')
+    process.exit(1)
+}
+
+if (!process.env.CLOUDINARY_API_SECRET) {
+    logger.error('Please define CLOUDINARY_API_SECRET in your .env file.')
+    process.exit(1)
+}
+
 export const MONGO_URI = process.env.MONGO_URI
 export const JWT_SECRET = process.env.JWT_SECRET
 export const NODE_ENV = process.env.NODE_ENV
@@ -81,3 +96,6 @@ export const SMPT_MAIL = process.env.SMPT_MAIL
 export const SMPT_HOST = process.env.SMPT_HOST
 export const SMPT_PORT = process.env.SMPT_PORT
 export const SMPT_PASSWORD = process.env.SMPT_PASSWORD
+export const CLOUDINARY_NAME = process.env.CLOUDINARY_NAME
+export const CLOUDINARY_API_KEY = process.env.CLOUDINARY_API_KEY
+export const CLOUDINARY_API_SECRET = process.env.CLOUDINARY_API_SECRET
