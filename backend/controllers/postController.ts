@@ -29,8 +29,7 @@ export const createPost = catchAsyncErrors(async (req: Request, res: Response) =
 
     const user = await User.findById((req as any).user._id);
 
-    // user.posts.unshift(post._id);
-    user?.posts.push(post._id);
+    user?.posts.unshift(post._id);
 
     await user?.save();
 

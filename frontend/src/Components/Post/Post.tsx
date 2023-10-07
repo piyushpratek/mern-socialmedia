@@ -11,10 +11,9 @@ import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import { addCommentOnPost, likePost } from "../../store/actionHelpers/postActionHelper";
-import { getFollowingPosts } from "../../store/actionHelpers/userActionHelper";
+import { getFollowingPosts, getMyPosts } from "../../store/actionHelpers/userActionHelper";
 import User from "../User/User";
 import CommentCard from "../CommentCard/CommentCard";
-
 
 interface PostProps {
     postId: string;
@@ -53,17 +52,15 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
     // const [captionValue, setCaptionValue] = useState(caption);
     // const [captionToggle, setCaptionToggle] = useState<boolean>(false);
 
-
     const dispatch = useAppDispatch()
     const { user } = useAppSelector((state) => state.user)
     const handleLike = async () => {
         setLiked(!liked)
         await dispatch(likePost(postId))
+
         if (isAccount) {
-            console.log("Bring Me Post");
-
+            dispatch(getMyPosts());
         } else {
-
             dispatch(getFollowingPosts())
         }
     }
@@ -73,10 +70,8 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
         await dispatch(addCommentOnPost(postId, commentValue))
 
         if (isAccount) {
-            console.log("Bring Me Post");
-
+            dispatch(getMyPosts());
         } else {
-
             dispatch(getFollowingPosts())
         }
 
@@ -89,8 +84,6 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
             }
         })
     }, [likes, user?._id])
-
-
 
     return (
         <div className="post">

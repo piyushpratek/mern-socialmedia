@@ -2,7 +2,6 @@ import { Button, Typography } from "@mui/material";
 import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import "./NewPost.css";
-
 import { loadUser } from "../../store/actionHelpers/userActionHelper";
 import { setAlertMessage } from "../../store/slice/user/userSlice";
 import { clearErrors } from "../../store/slice/post/likePostSlice";

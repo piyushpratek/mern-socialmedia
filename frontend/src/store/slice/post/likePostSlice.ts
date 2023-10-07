@@ -184,7 +184,6 @@ export const {
     newPostSuccess,
     newPostFailure,
 
-
     clearErrors,
     clearMessage,
 } = likeSlice.actions;
