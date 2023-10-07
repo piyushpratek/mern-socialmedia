@@ -25,6 +25,13 @@ export interface User {
     }[]
 }
 
+export interface Registeruserdata {
+    email: string;
+    password: string;
+    name: string;
+    avatar?: (File | null | string) | undefined
+}
+
 export type AllUsersData = User[];
 
 // export interface Post {
@@ -74,7 +81,6 @@ export interface Post {
     avatar: { url: string }
     name?: string
 }
-
 
 export interface ErrorResponse {
     message: string;

@@ -5,13 +5,20 @@ import { HttpStatus } from '../http-status.enum';
 import { Request, Response } from 'express'
 import { sendEmail } from '../middlewares/sendEmail';
 import crypto from 'crypto'
-
-// const cloudinary = require('cloudinary');
+import cloudinary from "cloudinary"
+import fs from 'fs'
 
 //Register User
 export const register = catchAsyncErrors(async (req: Request, res: Response) => {
   try {
     const { name, email, password } = req.body;
+    const avatar = req.file as any
+
+    if (!avatar) {
+      return res
+        .status(HttpStatus.BAD_REQUEST)
+        .json({ success: false, message: 'Avatar is required' });
+    }
 
     let user = await User.findOne({ email });
     if (user) {
@@ -20,17 +27,17 @@ export const register = catchAsyncErrors(async (req: Request, res: Response) => 
         .json({ success: false, message: 'User already exists' });
     }
 
-    // const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-    //   folder: 'avatars',
-    // });
+    const myCloud = await cloudinary.v2.uploader.upload(avatar.path, {
+      folder: 'avatars',
+    });
 
     user = await User.create({
       name,
       email,
       password,
-      // avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
-      avatar: { public_id: "sample_id", url: "sampleurl" }
+      avatar: { public_id: myCloud.public_id, url: myCloud.secure_url },
     });
+    fs.unlinkSync(avatar.path)
 
     const token = user.generateToken();
 

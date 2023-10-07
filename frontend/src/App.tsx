@@ -10,6 +10,7 @@ import { Snackbar, Alert } from "@mui/material"
 import { clearAlertMessage } from "./store/slice/user/userSlice"
 import Account from "./Components/Account/Account"
 import NewPost from "./Components/NewPost/NewPost"
+import Register from "./Components/Register/Register"
 
 function App() {
   const dispatch = useAppDispatch()
@@ -28,6 +29,7 @@ function App() {
           <Route path="/" element={isAuthenticated ? < Home /> : <Login />} />
           <Route path="/account" element={isAuthenticated ? < Account /> : <Login />} />
           <Route path="/newpost" element={isAuthenticated ? < NewPost /> : <Login />} />
+          <Route path="/register" element={isAuthenticated ? < Account /> : <Register />} />
         </Routes>
       </Router>
 

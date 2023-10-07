@@ -1,9 +1,9 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess, logoutUserFailure, logoutUserRequest, logoutUserSuccess } from "../slice/user/userSlice";
+import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess, logoutUserFailure, logoutUserRequest, logoutUserSuccess, registerFailure, registerRequest, registerSuccess } from "../slice/user/userSlice";
 import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
-import { ErrorResponse } from "../../types/types";
+import { ErrorResponse, Registeruserdata } from "../../types/types";
 import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../slice/post/myPostsSlice";
 
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
@@ -97,32 +97,27 @@ export const logoutUser = () => async (dispatch: Dispatch) => {
   }
 };
 
-// export const registerUser =
-//   (name, email, password, avatar) => async (dispatch) => {
-//     try {
-//       dispatch({
-//         type: "RegisterRequest",
-//       });
+export const registerUser =
+  (registerUserData: Registeruserdata) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(registerRequest())
 
-//       const { data } = await axios.post(
-//         "/api/v1/register",
-//         { name, email, password, avatar },
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
+      const myForm = new FormData();
+      myForm.set("name", registerUserData.name);
+      myForm.set("email", registerUserData.email);
+      myForm.set("password", registerUserData.password);
+      myForm.set("avatar", registerUserData?.avatar as any);
 
-//       dispatch({
-//         type: "RegisterSuccess",
-//         payload: data.user,
-//       });
-//     } catch (error) {
-//       dispatch({
-//         type: "RegisterFailure",
-//         payload: error.response.data.message,
-//
+      const payload = myForm;
+      const config = { headers: { "Content-Type": "multipart/form-data" } };
+      const { data } = await axios.post("/api/v1/register", payload, config);
+      dispatch(registerSuccess(data.user))
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message = axiosError?.response?.data?.message || "Error Occurred";
+      dispatch(registerFailure(message))
+    }
+  };
 
 // export const updateProfile = (name, email, avatar) => async (dispatch) => {
 //   try {

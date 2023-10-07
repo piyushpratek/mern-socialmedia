@@ -1,10 +1,12 @@
 import express from 'express'; // const {
 import { deleteMyProfile, followUser, forgotPassword, getAllUsers, getMyPosts, getUserProfile, login, logout, myProfile, register, resetPassword, updatePassword, updateProfile } from '../controllers/userController';
 import { isAuthenticated } from '../middlewares/auth';
+import { uploadMulter } from '../utils/multerUtils'
+
 
 const router = express.Router();
 
-router.route("/register").post(register);
+router.route("/register").post(uploadMulter.single('avatar'), register);
 
 router.route("/login").post(login);
 
