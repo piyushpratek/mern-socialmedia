@@ -17,7 +17,7 @@ export const register = catchAsyncErrors(async (req: Request, res: Response) => 
     if (!avatar) {
       return res
         .status(HttpStatus.BAD_REQUEST)
-        .json({ success: false, message: 'Avatar is required' });
+        .json({ success: false, message: 'Image is required' });
     }
 
     let user = await User.findOne({ email });
