@@ -12,8 +12,9 @@ import { isAuthenticated } from '../middlewares/auth';
 import { uploadMulter } from '../utils/multerUtils'
 
 const router = express.Router();
-
-router.route('/post/upload').post(isAuthenticated, uploadMulter.single('image'), createPost);
+//"image"= is a field name used from controller 
+const FILE_FIELD_NAME = 'image';
+router.route('/post/upload').post(isAuthenticated, uploadMulter.single(FILE_FIELD_NAME), createPost);
 
 router.route('/post/:id').get(isAuthenticated, likeAndUnlikePost).put(isAuthenticated, updateCaption).delete(isAuthenticated, deletePost);
 

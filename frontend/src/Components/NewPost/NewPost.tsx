@@ -1,5 +1,5 @@
 import { Button, Typography } from "@mui/material";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
 import "./NewPost.css";
 
@@ -9,23 +9,38 @@ import { clearErrors } from "../../store/slice/post/likePostSlice";
 import { createNewPost } from "../../store/actionHelpers/postActionHelper";
 
 const NewPost = () => {
-  const [image, setImage] = useState<string | null>(null);
+  const [image, setImage] = useState<File | null | string>(null);
   const [caption, setCaption] = useState<string>("");
 
   const { loading, error, message } = useAppSelector((state) => state.like);
   const dispatch = useAppDispatch();
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0];
+  const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
+    // const file = e.target.files[0];
 
-    const Reader = new FileReader();
-    Reader.readAsDataURL(file);
+    // const Reader = new FileReader();
+    // Reader.readAsDataURL(file);
 
-    Reader.onload = () => {
-      if (Reader.readyState === 2) {
-        setImage(Reader.result as string);
-      }
-    };
+    // Reader.onload = () => {
+    //   if (Reader.readyState === 2) {
+    //     setImage(Reader.result as string);
+    //   }
+    // };
+
+    if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+
+      reader.onload = () => {
+        if (reader.result && typeof reader.result === "string") {
+          setImage(file);
+        }
+      };
+
+    }
+
+
   };
 
   const submitHandler = async (e: { preventDefault: () => void; }) => {

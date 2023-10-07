@@ -54,22 +54,18 @@ export const deleteCommentOnPost = (id: string, commentId: string) => async (dis
   }
 };
 
-export const createNewPost = (caption: string, image: string | null) => async (dispatch: Dispatch) => {
+export const createNewPost = (caption: string, image: File | null | string) => async (dispatch: Dispatch) => {
   try {
     dispatch(newPostRequest())
+    const myForm = new FormData();
+    myForm.set("caption", caption);
+    if (image instanceof Blob) {
+      myForm.set("image", image);
+    }
+    const payload = myForm;
 
-    const { data } = await axios.post(
-      `/api/v1/post/upload`,
-      {
-        caption,
-        image,
-      },
-      {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }
-    );
+    const config = { headers: { "Content-Type": "multipart/form-data" } }
+    const { data } = await axios.post(`/api/v1/post/upload`, payload, config);
     dispatch(newPostSuccess(data.message))
   } catch (error) {
     const axiosError = error as AxiosError<ErrorResponse>;
