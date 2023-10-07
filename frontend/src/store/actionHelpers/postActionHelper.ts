@@ -1,7 +1,7 @@
 import { Dispatch } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
 import { ErrorResponse } from "../../types/types";
-import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, likeFailure, likeRequest, likeSuccess, newPostFailure, newPostRequest, newPostSuccess } from "../slice/post/likePostSlice";
+import { addCommentFailure, addCommentRequest, addCommentSuccess, deleteCommentFailure, deleteCommentRequest, deleteCommentSuccess, deletePostFailure, deletePostRequest, deletePostSuccess, likeFailure, likeRequest, likeSuccess, newPostFailure, newPostRequest, newPostSuccess, updateCaptionFailure, updateCaptionRequest, updateCaptionSuccess } from "../slice/post/likePostSlice";
 
 export const likePost = (id: string) => async (dispatch: Dispatch) => {
   try {
@@ -74,50 +74,31 @@ export const createNewPost = (caption: string, image: File | null | string) => a
   }
 };
 
-// export const updatePost = (caption, id) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "updateCaptionRequest",
-//     });
+export const updatePost = (caption: string, id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(updateCaptionRequest())
+    const myForm = new FormData();
+    myForm.set('caption', caption);
+    const payload = myForm
+    const config = { headers: { "Content-Type": "application/json", }, };
+    const { data } = await axios.put(`/api/v1/post/${id}`, payload, config);
+    dispatch(updateCaptionSuccess(data.message))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(updateCaptionFailure(message))
+  }
+};
 
-//     const { data } = await axios.put(
-//       `/api/v1/post/${id}`,
-//       {
-//         caption,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-//     dispatch({
-//       type: "updateCaptionSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "updateCaptionFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+export const deletePost = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(deletePostRequest())
 
-// export const deletePost = (id) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "deletePostRequest",
-//     });
-
-//     const { data } = await axios.delete(`/api/v1/post/${id}`);
-//     dispatch({
-//       type: "deletePostSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "deletePostFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.delete(`/api/v1/post/${id}`);
+    dispatch(deletePostSuccess(data.message))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(deletePostFailure(message))
+  }
+};

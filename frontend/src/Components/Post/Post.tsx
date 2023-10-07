@@ -10,8 +10,8 @@ import {
 import { Link } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../store/store";
-import { addCommentOnPost, likePost } from "../../store/actionHelpers/postActionHelper";
-import { getFollowingPosts, getMyPosts } from "../../store/actionHelpers/userActionHelper";
+import { addCommentOnPost, deletePost, likePost, updatePost } from "../../store/actionHelpers/postActionHelper";
+import { getFollowingPosts, getMyPosts, loadUser } from "../../store/actionHelpers/userActionHelper";
 import User from "../User/User";
 import CommentCard from "../CommentCard/CommentCard";
 
@@ -49,8 +49,8 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
     const [likesUser, setLikesUser] = useState<boolean>(false)
     const [commentValue, setCommentValue] = useState<string>("");
     const [commentToggle, setCommentToggle] = useState<boolean>(false);
-    // const [captionValue, setCaptionValue] = useState(caption);
-    // const [captionToggle, setCaptionToggle] = useState<boolean>(false);
+    const [captionValue, setCaptionValue] = useState<string>(caption);
+    const [captionToggle, setCaptionToggle] = useState<boolean>(false);
 
     const dispatch = useAppDispatch()
     const { user } = useAppSelector((state) => state.user)
@@ -65,6 +65,12 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
         }
     }
 
+    const updateCaptionHandler = (e: { preventDefault: () => void; }) => {
+        e.preventDefault();
+        dispatch(updatePost(captionValue, postId));
+        dispatch(getMyPosts());
+    };
+
     const addCommentHandler = async (e: { preventDefault: () => void; }) => {
         e.preventDefault()
         await dispatch(addCommentOnPost(postId, commentValue))
@@ -74,8 +80,13 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
         } else {
             dispatch(getFollowingPosts())
         }
-
     }
+
+    const deletePostHandler = async () => {
+        await dispatch(deletePost(postId));
+        dispatch(getMyPosts());
+        dispatch(loadUser());
+    };
 
     useEffect(() => {
         likes.forEach((item) => {
@@ -88,7 +99,7 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
     return (
         <div className="post">
             <div className="postHeader">
-                {isAccount ? <Button><MoreVert /></Button> : null} </div>
+                {isAccount ? <Button onClick={() => setCaptionToggle(!captionToggle)}><MoreVert /></Button> : null} </div>
             <img src={postImage} alt="Post" />
 
             <div className="postDetails">
@@ -110,7 +121,7 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
                     <ChatBubbleOutline />
                 </Button>
 
-                {isDelete ? <Button>
+                {isDelete ? <Button onClick={deletePostHandler}>
                     <DeleteOutline />
                 </Button> : null}
             </div>
@@ -145,6 +156,29 @@ const Post = ({ postId, caption, postImage, likes = [], comments = [], ownerImag
                             />)
                     ) : (<Typography>No Comments Yet</Typography>)}
 
+                </div>
+            </Dialog>
+
+            <Dialog
+                open={captionToggle}
+                onClose={() => setCaptionToggle(!captionToggle)}
+            >
+                <div className="DialogBox">
+                    <Typography variant="h4">Update Caption</Typography>
+
+                    <form className="commentForm" onSubmit={updateCaptionHandler}>
+                        <input
+                            type="text"
+                            value={captionValue}
+                            onChange={(e) => setCaptionValue(e.target.value)}
+                            placeholder="Caption Here..."
+                            required
+                        />
+
+                        <Button type="submit" variant="contained">
+                            Update
+                        </Button>
+                    </form>
                 </div>
             </Dialog>
         </div>

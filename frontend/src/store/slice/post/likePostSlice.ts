@@ -184,6 +184,14 @@ export const {
     newPostSuccess,
     newPostFailure,
 
+    updateCaptionRequest,
+    updateCaptionSuccess,
+    updateCaptionFailure,
+
+    deletePostRequest,
+    deletePostSuccess,
+    deletePostFailure,
+
     clearErrors,
     clearMessage,
 } = likeSlice.actions;
