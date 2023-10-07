@@ -11,9 +11,9 @@ export const createPost = catchAsyncErrors(async (req: Request, res: Response) =
   try {
     const myCloud = await cloudinary.v2.uploader.upload((req as any).file.path, {
       folder: 'posts',
-      width: 150,
-      crop: 'scale',
-      resource_type: 'auto',
+      // width: 150,
+      // crop: 'scale',
+      // resource_type: 'auto',
     });
     fs.unlinkSync((req as any).file.path)
     const newPostData = {

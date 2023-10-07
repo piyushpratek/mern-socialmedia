@@ -10,37 +10,27 @@ import { createNewPost } from "../../store/actionHelpers/postActionHelper";
 
 const NewPost = () => {
   const [image, setImage] = useState<File | null | string>(null);
+  const [imagePreview, setImagePreview] = useState<File | null | string>(null);
   const [caption, setCaption] = useState<string>("");
 
   const { loading, error, message } = useAppSelector((state) => state.like);
   const dispatch = useAppDispatch();
 
   const handleImageChange = (e: ChangeEvent<HTMLInputElement>) => {
-    // const file = e.target.files[0];
-
-    // const Reader = new FileReader();
-    // Reader.readAsDataURL(file);
-
-    // Reader.onload = () => {
-    //   if (Reader.readyState === 2) {
-    //     setImage(Reader.result as string);
-    //   }
-    // };
 
     if (e.target.files && e.target.files.length > 0) {
       const file = e.target.files[0];
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
+      const Reader = new FileReader();
+      Reader.readAsDataURL(file);
 
-      reader.onload = () => {
-        if (reader.result && typeof reader.result === "string") {
-          setImage(file);
+      Reader.onload = () => {
+        if (Reader.readyState === 2) {
+          setImage(file)
+          setImagePreview(Reader.result as string);
         }
       };
 
     }
-
-
   };
 
   const submitHandler = async (e: { preventDefault: () => void; }) => {
@@ -66,7 +56,7 @@ const NewPost = () => {
       <form className="newPostForm" onSubmit={submitHandler}>
         <Typography variant="h3">New Post</Typography>
 
-        {image && <img src={image} alt="post" />}
+        {imagePreview && <img src={imagePreview as string} alt="post" />}
         <input type="file" accept="image/*" onChange={handleImageChange} />
         <input
           type="text"
