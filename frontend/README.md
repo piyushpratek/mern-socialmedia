@@ -63,3 +63,4 @@ clearMessage: (state) => { state.message = null; }, = whenever this will be fire
 //getFollowingPost not working with isAccount
 //after post is like or dislike and login/ logout it shows the alert again and again
 //alert message not showing while we update caption reapeatedly
+//after post is deleted it shows alert state issue

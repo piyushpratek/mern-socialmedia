@@ -63,9 +63,9 @@ export const deletePost = catchAsyncErrors(async (req, res) => {
         message: 'Unauthorized',
       });
     }
+
     const imageId = post.image.public_id
     await cloudinary.v2.uploader.destroy(imageId)
-    // await cloudinary.v2.uploader.destroy(post.image.public_id);
 
     await post?.deleteOne();
 
