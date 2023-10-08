@@ -6,7 +6,7 @@ import Loader from "../Loader/Loader";
 import Post from "../Post/Post";
 import User from "../User/User";
 import "./Account.css";
-import { getMyPosts, logoutUser } from "../../store/actionHelpers/userActionHelper";
+import { deleteMyProfile, getMyPosts, logoutUser } from "../../store/actionHelpers/userActionHelper";
 import { setAlertMessage } from "../../store/slice/user/userSlice";
 import { clearErrors } from "../../store/slice/post/myPostsSlice";
 import { clearMessage } from "../../store/slice/post/likePostSlice";
@@ -32,7 +32,7 @@ const Account = () => {
   };
 
   const deleteProfileHandler = async () => {
-    // await dispatch(deleteMyProfile());
+    await dispatch(deleteMyProfile());
     dispatch(logoutUser());
   };
 

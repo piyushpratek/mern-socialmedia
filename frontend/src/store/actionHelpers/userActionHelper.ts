@@ -5,7 +5,7 @@ import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess 
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
 import { ErrorResponse, Registeruserdata, UpdatePasswordData, UpdateProfileData } from "../../types/types";
 import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../slice/post/myPostsSlice";
-import { updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
+import { deleteProfileFailure, deleteProfileRequest, deleteProfileSuccess, updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
 
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
@@ -156,25 +156,19 @@ export const updatePassword =
     }
   };
 
-// export const deleteMyProfile = () => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "deleteProfileRequest",
-//     });
+//delete profile 
+export const deleteMyProfile = () => async (dispatch: Dispatch) => {
+  try {
+    dispatch(deleteProfileRequest())
 
-//     const { data } = await axios.delete("/api/v1/delete/me");
-
-//     dispatch({
-//       type: "deleteProfileSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "deleteProfileFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.delete("/api/v1/delete/me");
+    dispatch(deleteProfileSuccess(data.message))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(deleteProfileFailure(message))
+  }
+};
 
 // export const forgotPassword = (email) => async (dispatch) => {
 //   try {

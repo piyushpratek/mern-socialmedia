@@ -258,7 +258,7 @@ export const deleteMyProfile = catchAsyncErrors(async (req: Request, res: Respon
     const userId = user?._id;
 
     // Removing Avatar from cloudinary
-    // await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+    await cloudinary.v2.uploader.destroy(user!.avatar.public_id);
 
     await user?.deleteOne();
 
@@ -271,7 +271,7 @@ export const deleteMyProfile = catchAsyncErrors(async (req: Request, res: Respon
     // Delete all posts of the user
     for (let i = 0; i < posts!.length; i++) {
       const post = await Post.findById(posts![i]);
-      // await cloudinary.v2.uploader.destroy(post.image.public_id);
+      await cloudinary.v2.uploader.destroy(post!.image.public_id);
       await post?.deleteOne();
     }
 
