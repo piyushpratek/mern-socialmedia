@@ -186,6 +186,8 @@ export const {
 
     deleteProfileRequest, deleteProfileSuccess, deleteProfileFailure,
 
+    forgotPasswordRequest, forgotPasswordSuccess, forgotPasswordFailure,
+
     clearErrors,
     clearMessage,
 } = likeSlice.actions;

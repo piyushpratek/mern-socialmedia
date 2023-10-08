@@ -43,6 +43,10 @@ export interface UpdatePasswordData {
     newPassword: string
 }
 
+export interface ForgotPasswordData {
+    email: string;
+}
+
 export type AllUsersData = User[];
 
 // export interface Post {

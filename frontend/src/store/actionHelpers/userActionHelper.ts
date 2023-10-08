@@ -3,9 +3,9 @@ import axios, { AxiosError } from "axios";
 import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess, logoutUserFailure, logoutUserRequest, logoutUserSuccess, registerFailure, registerRequest, registerSuccess } from "../slice/user/userSlice";
 import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
-import { ErrorResponse, Registeruserdata, UpdatePasswordData, UpdateProfileData } from "../../types/types";
+import { ErrorResponse, ForgotPasswordData, Registeruserdata, UpdatePasswordData, UpdateProfileData } from "../../types/types";
 import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../slice/post/myPostsSlice";
-import { deleteProfileFailure, deleteProfileRequest, deleteProfileSuccess, updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
+import { deleteProfileFailure, deleteProfileRequest, deleteProfileSuccess, forgotPasswordFailure, forgotPasswordRequest, forgotPasswordSuccess, updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
 
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
@@ -170,35 +170,19 @@ export const deleteMyProfile = () => async (dispatch: Dispatch) => {
   }
 };
 
-// export const forgotPassword = (email) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "forgotPasswordRequest",
-//     });
-
-//     const { data } = await axios.post(
-//       "/api/v1/forgot/password",
-//       {
-//         email,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     dispatch({
-//       type: "forgotPasswordSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "forgotPasswordFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+export const forgotPassword = (payload: ForgotPasswordData) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(forgotPasswordRequest())
+    // const payload = email
+    const config = { headers: { "Content-Type": "application/json" } }
+    const { data } = await axios.post("/api/v1/forgot/password", payload, config);
+    dispatch(forgotPasswordSuccess(data.message))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(forgotPasswordFailure(message))
+  }
+};
 
 // export const resetPassword = (token, password) => async (dispatch) => {
 //   try {
