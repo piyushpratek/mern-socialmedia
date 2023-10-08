@@ -188,6 +188,8 @@ export const {
 
     forgotPasswordRequest, forgotPasswordSuccess, forgotPasswordFailure,
 
+    resetPasswordRequest, resetPasswordSuccess, resetPasswordFailure,
+
     clearErrors,
     clearMessage,
 } = likeSlice.actions;

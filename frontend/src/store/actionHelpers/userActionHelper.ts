@@ -3,10 +3,11 @@ import axios, { AxiosError } from "axios";
 import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess, logoutUserFailure, logoutUserRequest, logoutUserSuccess, registerFailure, registerRequest, registerSuccess } from "../slice/user/userSlice";
 import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
-import { ErrorResponse, ForgotPasswordData, Registeruserdata, UpdatePasswordData, UpdateProfileData } from "../../types/types";
+import { ErrorResponse, ForgotPasswordData, Registeruserdata, ResetPasswordData, UpdatePasswordData, UpdateProfileData } from "../../types/types";
 import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../slice/post/myPostsSlice";
-import { deleteProfileFailure, deleteProfileRequest, deleteProfileSuccess, forgotPasswordFailure, forgotPasswordRequest, forgotPasswordSuccess, updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
+import { deleteProfileFailure, deleteProfileRequest, deleteProfileSuccess, forgotPasswordFailure, forgotPasswordRequest, forgotPasswordSuccess, resetPasswordFailure, resetPasswordRequest, resetPasswordSuccess, updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
 
+//Login User
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
     dispatch(loginRequest())
@@ -85,6 +86,7 @@ export const getAllUsers =
       }
     };
 
+//Logout User 
 export const logoutUser = () => async (dispatch: Dispatch) => {
   try {
     dispatch(logoutUserRequest())
@@ -98,6 +100,7 @@ export const logoutUser = () => async (dispatch: Dispatch) => {
   }
 };
 
+//Register User 
 export const registerUser =
   (registerUserData: Registeruserdata) => async (dispatch: Dispatch) => {
     try {
@@ -142,6 +145,7 @@ export const updateProfile = (updatUserData: UpdateProfileData) => async (dispat
   }
 };
 
+//Update password
 export const updatePassword =
   (payload: UpdatePasswordData) => async (dispatch: Dispatch) => {
     try {
@@ -170,6 +174,7 @@ export const deleteMyProfile = () => async (dispatch: Dispatch) => {
   }
 };
 
+//Forgot Password
 export const forgotPassword = (payload: ForgotPasswordData) => async (dispatch: Dispatch) => {
   try {
     dispatch(forgotPasswordRequest())
@@ -184,35 +189,18 @@ export const forgotPassword = (payload: ForgotPasswordData) => async (dispatch: 
   }
 };
 
-// export const resetPassword = (token, password) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "resetPasswordRequest",
-//     });
-
-//     const { data } = await axios.put(
-//       `/api/v1/password/reset/${token}`,
-//       {
-//         password,
-//       },
-//       {
-//         headers: {
-//           "Content-Type": "application/json",
-//         },
-//       }
-//     );
-
-//     dispatch({
-//       type: "resetPasswordSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "resetPasswordFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+export const resetPassword = (payload: ResetPasswordData) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(resetPasswordRequest())
+    const config = { headers: { "Content-Type": "application/json" } }
+    const { data } = await axios.put(`/api/v1/password/reset/${payload?.token}`, payload, config);
+    dispatch(resetPasswordSuccess(data.message))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(resetPasswordFailure(message))
+  }
+};
 
 // export const getUserPosts = (id) => async (dispatch) => {
 //   try {

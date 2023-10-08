@@ -45,6 +45,12 @@ export interface UpdatePasswordData {
 
 export interface ForgotPasswordData {
     email: string;
+    token: string;
+}
+
+export interface ResetPasswordData {
+    newPassword: string;
+    token: string;
 }
 
 export type AllUsersData = User[];

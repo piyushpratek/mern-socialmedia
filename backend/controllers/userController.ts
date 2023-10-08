@@ -413,7 +413,8 @@ export const forgotPassword = catchAsyncErrors(async (req: Request, res: Respons
 
     const resetUrl = `${req.protocol}://${req.get(
       "host"
-    )}/api/v1/password/reset/${resetPasswordToken}`;
+      // )}/api/v1/password/reset/${resetPasswordToken}`;
+    )}/password/reset/${resetPasswordToken}`;
 
     const message = `Reset Your Password by clicking on the link below: \n\n ${resetUrl}`;
 
