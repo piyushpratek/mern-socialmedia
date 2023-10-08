@@ -1,6 +1,13 @@
 import { createSlice } from '@reduxjs/toolkit';
+import { User } from '../../../types/types';
 
-const initialState = {
+interface UserProfileState {
+    loading: boolean;
+    user: User | null;
+    error: string | null;
+}
+
+const initialState: UserProfileState = {
     loading: false,
     user: null,
     error: null,

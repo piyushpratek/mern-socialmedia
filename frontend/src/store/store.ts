@@ -5,17 +5,18 @@ import postOfFollowingSlice from './slice/user/postOfFollowingSlice';
 import allUsersSlice from './slice/user/allUsersSlice';
 import likePostSlice from './slice/post/likePostSlice';
 import myPostsSlice from './slice/post/myPostsSlice';
-// import userProfileSlice from './slice/user/userProfileSlice';
-
+import userProfileSlice from './slice/user/userProfileSlice';
+import userPostsSlice from './slice/post/userPostsSlice';
 
 export const store = configureStore({
     reducer: {
         user: userSlice,
         postOfFollowing: postOfFollowingSlice,
         allUsers: allUsersSlice,
-        // userProfile: userProfileSlice
+        userProfile: userProfileSlice,
         like: likePostSlice,
-        myPosts: myPostsSlice
+        myPosts: myPostsSlice,
+        userPosts: userPostsSlice
     },
 
 });

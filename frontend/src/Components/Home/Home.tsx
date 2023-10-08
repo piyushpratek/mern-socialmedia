@@ -51,7 +51,6 @@ const Home = () => {
                     )) : <Typography variant="h6">No Posts Yet</Typography>
                 }
 
-
             </div>
             <div className="homeright">
                 {users.length > 0 ? users.map((user) => ((

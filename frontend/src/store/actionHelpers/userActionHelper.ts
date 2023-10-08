@@ -5,7 +5,9 @@ import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess 
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
 import { ErrorResponse, ForgotPasswordData, Registeruserdata, ResetPasswordData, UpdatePasswordData, UpdateProfileData } from "../../types/types";
 import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../slice/post/myPostsSlice";
-import { deleteProfileFailure, deleteProfileRequest, deleteProfileSuccess, forgotPasswordFailure, forgotPasswordRequest, forgotPasswordSuccess, resetPasswordFailure, resetPasswordRequest, resetPasswordSuccess, updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
+import { deleteProfileFailure, deleteProfileRequest, deleteProfileSuccess, followUserFailure, followUserRequest, followUserSuccess, forgotPasswordFailure, forgotPasswordRequest, forgotPasswordSuccess, resetPasswordFailure, resetPasswordRequest, resetPasswordSuccess, updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
+import { userPostsFailure, userPostsRequest, userPostsSuccess } from "../slice/post/userPostsSlice";
+import { userProfileFailure, userProfileRequest, userProfileSuccess } from "../slice/user/userProfileSlice";
 
 //Login User
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
@@ -202,59 +204,41 @@ export const resetPassword = (payload: ResetPasswordData) => async (dispatch: Di
   }
 };
 
-// export const getUserPosts = (id) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "userPostsRequest",
-//     });
+export const getUserPosts = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(userPostsRequest())
 
-//     const { data } = await axios.get(`/api/v1/userposts/${id}`);
-//     dispatch({
-//       type: "userPostsSuccess",
-//       payload: data.posts,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "userPostsFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.get(`/api/v1/userposts/${id}`);
+    dispatch(userPostsSuccess(data.posts))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(userPostsFailure(message))
+  }
+};
 
-// export const getUserProfile = (id) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "userProfileRequest",
-//     });
+export const getUserProfile = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(userProfileRequest())
 
-//     const { data } = await axios.get(`/api/v1/user/${id}`);
-//     dispatch({
-//       type: "userProfileSuccess",
-//       payload: data.user,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "userProfileFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.get(`/api/v1/user/${id}`);
+    dispatch(userProfileSuccess(data.user))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(userProfileFailure(message))
+  }
+};
 
-// export const followAndUnfollowUser = (id) => async (dispatch) => {
-//   try {
-//     dispatch({
-//       type: "followUserRequest",
-//     });
+export const followAndUnfollowUser = (id: string) => async (dispatch: Dispatch) => {
+  try {
+    dispatch(followUserRequest())
 
-//     const { data } = await axios.get(`/api/v1/follow/${id}`);
-//     dispatch({
-//       type: "followUserSuccess",
-//       payload: data.message,
-//     });
-//   } catch (error) {
-//     dispatch({
-//       type: "followUserFailure",
-//       payload: error.response.data.message,
-//     });
-//   }
-// };
+    const { data } = await axios.get(`/api/v1/follow/${id}`);
+    dispatch(followUserSuccess(data.message))
+  } catch (error) {
+    const axiosError = error as AxiosError<ErrorResponse>;
+    const message = axiosError?.response?.data?.message || "Error Occurred";
+    dispatch(followUserFailure(message))
+  }
+};

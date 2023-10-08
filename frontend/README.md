@@ -66,4 +66,7 @@ clearMessage: (state) => { state.message = null; }, = whenever this will be fire
 //after post is deleted it shows alert state issue
 //at updateProfile only update when image is change
 //at forgotPassword= error message is showing after email is sent
+
 //resetPassword not working
+//UserProfile = showing error alert check
+//search component =fix required
