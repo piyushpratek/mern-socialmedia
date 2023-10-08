@@ -32,6 +32,12 @@ export interface Registeruserdata {
     avatar?: (File | null | string) | undefined
 }
 
+export interface UpdateProfileData {
+    email: string;
+    name: string;
+    avatar?: (File | null | string) | undefined
+}
+
 export type AllUsersData = User[];
 
 // export interface Post {

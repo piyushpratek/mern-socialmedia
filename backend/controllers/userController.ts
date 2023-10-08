@@ -214,6 +214,7 @@ export const updateProfile = catchAsyncErrors(async (req: Request, res: Response
     const user = await User.findById((req as any).user._id);
 
     const { name, email } = req.body;
+    const avatar = req.file as any
 
     if (name) {
       user!.name = name;
@@ -222,15 +223,16 @@ export const updateProfile = catchAsyncErrors(async (req: Request, res: Response
       user!.email = email;
     }
 
-    // if (avatar) {
-    // await cloudinary.v2.uploader.destroy(user.avatar.public_id);
+    if (avatar) {
+      await cloudinary.v2.uploader.destroy(user!.avatar.public_id);
 
-    // const myCloud = await cloudinary.v2.uploader.upload(avatar, {
-    //   folder: "avatars",
-    // });
-    // user.avatar.public_id = myCloud.public_id;
-    // user.avatar.url = myCloud.secure_url;
-    // }
+      const myCloud = await cloudinary.v2.uploader.upload(avatar.path, {
+        folder: "avatars",
+      });
+      user!.avatar.public_id = myCloud.public_id;
+      user!.avatar.url = myCloud.secure_url;
+    }
+    fs.unlinkSync(avatar.path)
 
     await user?.save();
 

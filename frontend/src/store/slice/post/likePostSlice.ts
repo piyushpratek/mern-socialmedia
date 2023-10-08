@@ -168,29 +168,19 @@ const likeSlice = createSlice({
 });
 
 export const {
-    likeRequest,
-    likeSuccess,
-    likeFailure,
+    likeRequest, likeSuccess, likeFailure,
 
-    addCommentRequest,
-    addCommentSuccess,
-    addCommentFailure,
+    addCommentRequest, addCommentSuccess, addCommentFailure,
 
-    deleteCommentRequest,
-    deleteCommentSuccess,
-    deleteCommentFailure,
+    deleteCommentRequest, deleteCommentSuccess, deleteCommentFailure,
 
-    newPostRequest,
-    newPostSuccess,
-    newPostFailure,
+    newPostRequest, newPostSuccess, newPostFailure,
 
-    updateCaptionRequest,
-    updateCaptionSuccess,
-    updateCaptionFailure,
+    updateCaptionRequest, updateCaptionSuccess, updateCaptionFailure,
 
-    deletePostRequest,
-    deletePostSuccess,
-    deletePostFailure,
+    deletePostRequest, deletePostSuccess, deletePostFailure,
+
+    updateProfileRequest, updateProfileSuccess, updateProfileFailure,
 
     clearErrors,
     clearMessage,

@@ -13,7 +13,6 @@ const initialState: AllUsersState = {
     error: null,
 };
 
-
 const allUsersSlice = createSlice({
     name: 'allUsers',
     initialState,

@@ -11,6 +11,7 @@ import { clearAlertMessage } from "./store/slice/user/userSlice"
 import Account from "./Components/Account/Account"
 import NewPost from "./Components/NewPost/NewPost"
 import Register from "./Components/Register/Register"
+import UpdateProfile from "./Components/UpdateProfile/UpdateProfile"
 
 function App() {
   const dispatch = useAppDispatch()
@@ -33,6 +34,8 @@ function App() {
           <Route path="/newpost" element={isAuthenticated ? < NewPost /> : <Login />} />
 
           <Route path="/register" element={isAuthenticated ? < Account /> : <Register />} />
+
+          <Route path="/update/profile" element={isAuthenticated ? < UpdateProfile /> : <Login />} />
 
         </Routes>
       </Router>
