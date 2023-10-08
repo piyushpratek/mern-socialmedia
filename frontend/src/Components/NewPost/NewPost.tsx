@@ -4,7 +4,7 @@ import { useAppDispatch, useAppSelector } from "../../store/store";
 import "./NewPost.css";
 import { loadUser } from "../../store/actionHelpers/userActionHelper";
 import { setAlertMessage } from "../../store/slice/user/userSlice";
-import { clearErrors } from "../../store/slice/post/likePostSlice";
+import { clearErrors, clearMessage } from "../../store/slice/post/likePostSlice";
 import { createNewPost } from "../../store/actionHelpers/postActionHelper";
 
 const NewPost = () => {
@@ -46,7 +46,7 @@ const NewPost = () => {
 
     if (message) {
       dispatch(setAlertMessage({ message: message, severity: "success", }))
-      dispatch(clearErrors())
+      dispatch(clearMessage())
     }
   }, [dispatch, error, message]);
 

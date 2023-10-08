@@ -3,9 +3,9 @@ import axios, { AxiosError } from "axios";
 import { loadUserFailure, loadUserRequest, loadUserSuccess, loginFailure, loginRequest, loginSuccess, logoutUserFailure, logoutUserRequest, logoutUserSuccess, registerFailure, registerRequest, registerSuccess } from "../slice/user/userSlice";
 import { postOfFollowingFailure, postOfFollowingRequest, postOfFollowingSuccess } from "../slice/user/postOfFollowingSlice";
 import { allUsersFailure, allUsersRequest, allUsersSuccess } from "../slice/user/allUsersSlice";
-import { ErrorResponse, Registeruserdata, UpdateProfileData } from "../../types/types";
+import { ErrorResponse, Registeruserdata, UpdatePasswordData, UpdateProfileData } from "../../types/types";
 import { myPostsFailure, myPostsRequest, myPostsSuccess } from "../slice/post/myPostsSlice";
-import { updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
+import { updatePasswordFailure, updatePasswordRequest, updatePasswordSuccess, updateProfileFailure, updateProfileRequest, updateProfileSuccess } from "../slice/post/likePostSlice";
 
 export const loginUser = (email: string, password: string) => async (dispatch: Dispatch) => {
   try {
@@ -142,34 +142,19 @@ export const updateProfile = (updatUserData: UpdateProfileData) => async (dispat
   }
 };
 
-// export const updatePassword =
-//   (oldPassword, newPassword) => async (dispatch) => {
-//     try {
-//       dispatch({
-//         type: "updatePasswordRequest",
-//       });
-
-//       const { data } = await axios.put(
-//         "/api/v1/update/password",
-//         { oldPassword, newPassword },
-//         {
-//           headers: {
-//             "Content-Type": "application/json",
-//           },
-//         }
-//       );
-
-//       dispatch({
-//         type: "updatePasswordSuccess",
-//         payload: data.message,
-//       });
-//     } catch (error) {
-//       dispatch({
-//         type: "updatePasswordFailure",
-//         payload: error.response.data.message,
-//       });
-//     }
-//   };
+export const updatePassword =
+  (payload: UpdatePasswordData) => async (dispatch: Dispatch) => {
+    try {
+      dispatch(updatePasswordRequest())
+      const config = { headers: { "Content-Type": "application/json" } }
+      const { data } = await axios.put("/api/v1/update/password", payload, config);
+      dispatch(updatePasswordSuccess(data.message))
+    } catch (error) {
+      const axiosError = error as AxiosError<ErrorResponse>;
+      const message = axiosError?.response?.data?.message || "Error Occurred";
+      dispatch(updatePasswordFailure(message))
+    }
+  };
 
 // export const deleteMyProfile = () => async (dispatch) => {
 //   try {

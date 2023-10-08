@@ -9,6 +9,7 @@ import "./Account.css";
 import { getMyPosts, logoutUser } from "../../store/actionHelpers/userActionHelper";
 import { setAlertMessage } from "../../store/slice/user/userSlice";
 import { clearErrors } from "../../store/slice/post/myPostsSlice";
+import { clearMessage } from "../../store/slice/post/likePostSlice";
 // import { deleteMyProfile, getMyPosts, logoutUser } from "../../Actions/User";
 
 const Account = () => {
@@ -51,7 +52,7 @@ const Account = () => {
     }
     if (message) {
       dispatch(setAlertMessage({ message: message, severity: "success", }))
-      dispatch(clearErrors());
+      dispatch(clearMessage());
     }
   }, [error, message, likeError, dispatch]);
 

@@ -5,6 +5,7 @@ import "./UpdateProfile.css";
 import Loader from "../Loader/Loader";
 import { loadUser, updateProfile } from "../../store/actionHelpers/userActionHelper";
 import { setAlertMessage, clearErrors } from "../../store/slice/user/userSlice";
+import { clearMessage } from "../../store/slice/post/likePostSlice";
 
 const UpdateProfile = () => {
   const { loading, error, user } = useAppSelector((state) => state.user);
@@ -56,7 +57,7 @@ const UpdateProfile = () => {
 
     if (message) {
       dispatch(setAlertMessage({ message: message, severity: "success", }))
-      dispatch(clearErrors());
+      dispatch(clearMessage());
     }
   }, [dispatch, error, updateError, message]);
   return loading ? (
@@ -65,7 +66,7 @@ const UpdateProfile = () => {
     <div className="updateProfile">
       <form className="updateProfileForm" onSubmit={submitHandler}>
         <Typography variant="h3" style={{ padding: "2vmax" }}>
-          Social Aap
+          Social App
         </Typography>
 
         <Avatar

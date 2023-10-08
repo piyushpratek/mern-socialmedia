@@ -182,6 +182,8 @@ export const {
 
     updateProfileRequest, updateProfileSuccess, updateProfileFailure,
 
+    updatePasswordRequest, updatePasswordSuccess, updatePasswordFailure,
+
     clearErrors,
     clearMessage,
 } = likeSlice.actions;

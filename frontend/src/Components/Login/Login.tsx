@@ -1,19 +1,29 @@
 import { Button, Typography } from "@mui/material"
 import "./login.css"
 import { Link } from "react-router-dom"
-import { useState } from "react"
-import { useAppDispatch } from "../../store/store"
+import { useEffect, useState } from "react"
+import { useAppDispatch, useAppSelector } from "../../store/store"
 import { loginUser } from "../../store/actionHelpers/userActionHelper"
+import { setAlertMessage, clearErrors } from "../../store/slice/user/userSlice"
 
 const Login = () => {
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const dispatch = useAppDispatch()
+    const { error } = useAppSelector((state) => state.user)
     const loginHandler = (e: { preventDefault: () => void }) => {
         e.preventDefault()
 
         dispatch(loginUser(email, password))
     }
+
+    useEffect(() => {
+        if (error) {
+            dispatch(setAlertMessage({ message: error, severity: "error", }))
+            dispatch(clearErrors());
+        }
+
+    }, [error, dispatch]);
     return (
         <div className="login">
             <form className="loginForm" onSubmit={loginHandler}>

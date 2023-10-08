@@ -38,6 +38,11 @@ export interface UpdateProfileData {
     avatar?: (File | null | string) | undefined
 }
 
+export interface UpdatePasswordData {
+    oldPassword: string;
+    newPassword: string
+}
+
 export type AllUsersData = User[];
 
 // export interface Post {
