@@ -1,5 +1,5 @@
 import express from 'express'; // const {
-import { deleteMyProfile, followUser, forgotPassword, getAllUsers, getMyPosts, getUserProfile, login, logout, myProfile, register, resetPassword, updatePassword, updateProfile } from '../controllers/userController';
+import { deleteMyProfile, followUser, forgotPassword, getAllUsers, getMyPosts, getUserPosts, getUserProfile, login, logout, myProfile, register, resetPassword, updatePassword, updateProfile } from '../controllers/userController';
 import { isAuthenticated } from '../middlewares/auth';
 import { uploadMulter } from '../utils/multerUtils'
 
@@ -24,7 +24,7 @@ router.route("/me").get(isAuthenticated, myProfile);
 
 router.route("/my/posts").get(isAuthenticated, getMyPosts);
 
-// router.route("/userposts/:id").get(isAuthenticated, getUserPosts);
+router.route("/userposts/:id").get(isAuthenticated, getUserPosts);
 
 router.route("/user/:id").get(isAuthenticated, getUserProfile);
 

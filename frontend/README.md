@@ -68,5 +68,9 @@ clearMessage: (state) => { state.message = null; }, = whenever this will be fire
 //at forgotPassword= error message is showing after email is sent
 
 //resetPassword not working
-//UserProfile = showing error alert check
 //search component =fix required
+
+//home post like unlike no state change
+//fix when user like and dislike post on going to other profile state management should work at 5:20
+
+//adding comment and deleting no state change

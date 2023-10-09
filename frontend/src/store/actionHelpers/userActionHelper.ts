@@ -191,6 +191,7 @@ export const forgotPassword = (payload: ForgotPasswordData) => async (dispatch: 
   }
 };
 
+//Reset password
 export const resetPassword = (payload: ResetPasswordData) => async (dispatch: Dispatch) => {
   try {
     dispatch(resetPasswordRequest())
@@ -204,6 +205,7 @@ export const resetPassword = (payload: ResetPasswordData) => async (dispatch: Di
   }
 };
 
+//get user posts
 export const getUserPosts = (id: string) => async (dispatch: Dispatch) => {
   try {
     dispatch(userPostsRequest())
@@ -217,6 +219,7 @@ export const getUserPosts = (id: string) => async (dispatch: Dispatch) => {
   }
 };
 
+//get user profile 
 export const getUserProfile = (id: string) => async (dispatch: Dispatch) => {
   try {
     dispatch(userProfileRequest())
@@ -230,6 +233,7 @@ export const getUserProfile = (id: string) => async (dispatch: Dispatch) => {
   }
 };
 
+//follow and unfollow user 
 export const followAndUnfollowUser = (id: string) => async (dispatch: Dispatch) => {
   try {
     dispatch(followUserRequest())

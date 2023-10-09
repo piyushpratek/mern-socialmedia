@@ -380,7 +380,7 @@ export const getUserProfile = catchAsyncErrors(async (req: Request, res: Respons
 export const getAllUsers = catchAsyncErrors(async (req, res) => {
   try {
     const users = await User.find({
-      // name: { $regex: req.query.name, $options: "i" },
+      name: { $regex: req.query.name, $options: "i" },
     });
 
     res.status(HttpStatus.OK).json({

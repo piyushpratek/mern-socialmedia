@@ -6,7 +6,7 @@ import "./Search.css";
 import { getAllUsers } from "../../store/actionHelpers/userActionHelper";
 
 const Search = () => {
-  const [name, setName] = React.useState("");
+  const [name, setName] = React.useState<string>("");
 
   const { users, loading } = useAppSelector((state) => state.allUsers);
 
@@ -20,7 +20,7 @@ const Search = () => {
     <div className="search">
       <form className="searchForm" onSubmit={submitHandler}>
         <Typography variant="h3" style={{ padding: "2vmax" }}>
-          Social Aap
+          Social App
         </Typography>
 
         <input

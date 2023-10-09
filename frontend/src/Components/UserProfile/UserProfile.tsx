@@ -12,21 +12,14 @@ import { clearMessage } from "../../store/slice/post/likePostSlice";
 const UserProfile = () => {
   const dispatch = useAppDispatch();
 
-  const {
-    user,
-    loading: userLoading,
-    error: userError,
-  } = useAppSelector((state) => state.userProfile);
+  const { user, loading: userLoading, error: userError, } = useAppSelector((state) => state.userProfile);
 
   const { user: me } = useAppSelector((state) => state.user);
   const { loading, error, posts } = useAppSelector((state) => state.userPosts);
-  const {
-    error: followError,
-    message,
-    loading: followLoading,
-  } = useAppSelector((state) => state.like);
+  const { error: followError, message, loading: followLoading, } = useAppSelector((state) => state.like);
 
   const params = useParams<{ id: string }>();
+
   const [followersToggle, setFollowersToggle] = useState<boolean>(false);
   const [followingToggle, setFollowingToggle] = useState<boolean>(false);
   const [following, setFollowing] = useState<boolean>(false);
@@ -105,6 +98,7 @@ const UserProfile = () => {
         )}
       </div>
       <div className="accountright">
+
         {user && (
           <>
             <Avatar
@@ -145,6 +139,7 @@ const UserProfile = () => {
             )}
           </>
         )}
+
         <Dialog
           open={followersToggle}
           onClose={() => setFollowersToggle(!followersToggle)}
