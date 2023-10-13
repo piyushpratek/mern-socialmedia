@@ -6,12 +6,14 @@ const app: Application = express()
 // Using Middlewares
 app.use(express.json({ limit: "50mb" }))
 app.use(cookieParser())
-app.use(express.urlencoded({ limit: "50mb", extended: true }));
+// app.use(express.urlencoded({ limit: "50mb", extended: true }));
+app.use(bodyParser.urlencoded({ extended: true }))
 
 // Importing Routes
 import post from '../routes/postRoute'
 import user from '../routes/userRoute'
 import path from 'path'
+import bodyParser from 'body-parser'
 
 // const user = require("./routes/user");
 
