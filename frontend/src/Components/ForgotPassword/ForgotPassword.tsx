@@ -14,7 +14,10 @@ const ForgotPassword = () => {
 
   const submitHandler = (e: { preventDefault: () => void; }) => {
     e.preventDefault();
-    dispatch(forgotPassword({ email }));
+    dispatch(forgotPassword({
+      email,
+      token: ""
+    }));
   };
 
   useEffect(() => {
