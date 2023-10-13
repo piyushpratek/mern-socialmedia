@@ -8,6 +8,9 @@
     "start:dev:debug": "cross-env NODE_ENV=development ts-node-dev --respawn --transpile-only --clear --inspect -- ./server.ts",
     "start:prod": "cross-env NODE_ENV=production ts-node-dev --respawn --transpile-only --clear ./server.ts",
     "start:prod:debug": "cross-env NODE_ENV=production ts-node-dev --respawn --transpile-only --clear --inspect -- ./server.ts",
+    "build": "tsc --build",
+    "start:dev-static": "cross-env NODE_ENV=development USE_STATIC_BUILD=true node ./dist/server.js",
+    "start:prod-static": "cross-env NODE_ENV=production USE_STATIC_BUILD=true node ./dist/server.js",
     "lint": "eslint . --max-warnings=0",
     "lint-fix": "eslint . --fix"
   },
